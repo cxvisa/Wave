@@ -359,6 +359,15 @@ void HttpToolKit::getOkStringForGetForRestJson (string &okString, const string &
     okString += jsonBody;
 }
 
+void HttpToolKit::getOkStringWithContentTypeAndLength (string &okString, const string &contentType, const UI32 &contentLength)
+{
+    okString  = "HTTP/1.1 200 OK\r\n";
+    okString += "Server: Wave World Wide Web Server (W4S) v0.0.1\r\n";
+    okString += "Content-Type: " + contentType + "\r\n";
+    okString += string ("Content-Length: ") + contentLength + "\r\n";
+    okString += "\r\n";
+}
+
 void HttpToolKit::getSimpleJsonPostString (string &jsonPostString, const string &jsonContent, const Uri &url)
 {
     jsonPostString  = "POST ";

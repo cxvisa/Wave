@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -46,7 +46,7 @@ ServerStreamingSocket::~ServerStreamingSocket ()
 
 const ServerStreamingSocket &ServerStreamingSocket::operator << (const string &dataString)
 {
-    if (-1 == (send (dataString)))
+    if (-1 == (StreamingSocketBase::send (dataString)))
     {
 //        cout << "*** errno = " << errno << " ***\n";
         //waveAssert (false, __FILE__,__LINE__);
@@ -55,9 +55,27 @@ const ServerStreamingSocket &ServerStreamingSocket::operator << (const string &d
     return (*this);
 }
 
+SI32 ServerStreamingSocket::send(UI8 *pBuffer, const UI32 maximumBufferLength)
+{
+    return (StreamingSocketBase::send (pBuffer, maximumBufferLength));
+}
+
+bool ServerStreamingSocket::operator << (const FixedSizeBuffer &fixedSizeBuffer)
+{
+    if (-1 == (StreamingSocketBase::send (fixedSizeBuffer)))
+    {
+        //cout << "*** errno = " << errno << " ***\n";
+        return (false);
+    }
+    else
+    {
+        return (true);
+    }
+}
+
 bool ServerStreamingSocket::operator << (SerializableObject *pSerializableObject)
 {
-    if (-1 == (send (pSerializableObject)))
+    if (-1 == (StreamingSocketBase::send (pSerializableObject)))
     {
         //cout << "*** errno = " << errno << " ***\n";
         return (false);

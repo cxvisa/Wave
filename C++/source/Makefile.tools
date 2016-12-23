@@ -239,7 +239,7 @@ LIBFILES	+= -l$(PROJECT)
 endif
 
 LIBFILES += -lxerces-c -lxalan-c -lxalanMsg -lcurl -lssl -lidn -lpq -lcrypto \
-	-lpam -luuid -lpthread
+	-lpam -luuid -lpthread -lmagic
 LIBFILES	+= -lrt -liberty 
 LIBFILES	+= -lz
 LIBFILES	+= $(if $(filter $(OS),SunOS),-lsocket -lnsl)

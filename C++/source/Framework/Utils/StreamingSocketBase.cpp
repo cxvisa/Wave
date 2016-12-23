@@ -96,7 +96,7 @@ SI32 StreamingSocketBase::send (const FixedSizeBuffer &fixedSizeBuffer)
         return (-1);
     }
 
-    UI32  fixedSizeBufferSize = fixedSizeBuffer.getMaximumSize ();
+    UI32  fixedSizeBufferSize = fixedSizeBuffer.getCurrentSize ();
     UI8  *pBuffer             = fixedSizeBuffer.getPRawBuffer ();
     SI32  sendStatus          = 0;
 
@@ -106,7 +106,7 @@ SI32 StreamingSocketBase::send (const FixedSizeBuffer &fixedSizeBuffer)
         if (-1 == sendStatus)
         {
             tracePrintf (TRACE_LEVEL_ERROR, "StreamingSocketBase::send (const FixedSizeBuffer &fixedSizeBuffer) : errno : %d", errno);
-	        return (sendStatus);
+          return (sendStatus);
         }
 
         sendStatus = send (pBuffer, fixedSizeBufferSize); //MSG_NOSIGNAL
@@ -156,35 +156,35 @@ SI32 StreamingSocketBase::send (SerializableObject *pSerializableObject)
 
 SI32 StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)
 {
-	if (true != (isValid ()))
-	{
-		return (-1);
-	}
-	SI32  sendStatus          = 0;
-	UI32  sendLen			  = 0;
-	if (NULL != pBuffer)
-	{
-		while ( sendLen < maximumBufferLength )
-		{
-			sendStatus = ::send (m_socket, (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen), 0); //MSG_NOSIGNAL
+  if (true != (isValid ()))
+  {
+    return (-1);
+  }
+  SI32  sendStatus          = 0;
+  UI32  sendLen			  = 0;
+  if (NULL != pBuffer)
+  {
+    while ( sendLen < maximumBufferLength )
+    {
+      sendStatus = ::send (m_socket, (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen), 0); //MSG_NOSIGNAL
 
-			tracePrintf (TRACE_LEVEL_DEVEL, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)Sen(Status %d, Len %d, Total %d)",sendStatus, sendLen, maximumBufferLength);
+      tracePrintf (TRACE_LEVEL_DEVEL, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)Sen(Status %d, Len %d, Total %d)",sendStatus, sendLen, maximumBufferLength);
 
-			if (-1 == sendStatus)
-			{
-				return (sendStatus);
-			}
+      if (-1 == sendStatus)
+      {
+        return (sendStatus);
+      }
 
-			sendLen += sendStatus;
+      sendLen += sendStatus;
 
-			if ( sendLen < maximumBufferLength ){
-				tracePrintf (TRACE_LEVEL_WARN, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength) Fragmented Send");
-			}
+      if ( sendLen < maximumBufferLength ){
+        tracePrintf (TRACE_LEVEL_WARN, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength) Fragmented Send");
+      }
 
 
-		}
-	}
-	return (sendLen);
+    }
+  }
+  return (sendLen);
 }
 
 SI32 StreamingSocketBase::send (const string &dataString)

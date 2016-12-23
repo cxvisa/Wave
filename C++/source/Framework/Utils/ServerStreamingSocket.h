@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -29,6 +29,8 @@ class ServerStreamingSocket : protected StreamingSocket
                                                    ServerStreamingSocket ();
         virtual                                   ~ServerStreamingSocket ();
                 const ServerStreamingSocket       &operator <<           (const string &dataString);
+                      bool                         operator <<           (const FixedSizeBuffer &fixedSizeBuffer);
+                      SI32                         send                  (UI8 *pBuffer, const UI32 maximumBufferLength);
                       bool                         operator <<           (SerializableObject *pSerializableObject);
                       bool                         operator >>           (string &dataString);
                       bool                         operator >>           (FixedSizeBuffer &fizedSizeBuffer);

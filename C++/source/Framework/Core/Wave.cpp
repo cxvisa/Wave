@@ -56,9 +56,12 @@
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager2.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager3.h"
 
+#include "Framework/Utils/FileUtils.h"
+
 #include <time.h>
 #include <stdlib.h>
 #include <sys/resource.h>
+#include <magic.h>
 
 //Commenting it our for now.  We need to find way to enable it on Solaris.
 //extern int daemon (int doNotChangeToRootDir, int doNotCloseFileDescriptors);
@@ -306,6 +309,10 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
     // First record the current working directory as the directory in which the process was started
 
     FrameworkToolKit::initialize ();
+
+    // Initialize Files utils for magic numbers etc.
+
+    FileUtils::initialize ();
 
     //Initialize time zone information
 

@@ -4,6 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
+#include "HttpInterface/Content/WaveContentServerPage.h"
 #include "HttpInterface/HttpInterfaceReceiverObjectManager.h"
 #include "HttpInterface/HttpInterfaceReceiverThread.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
@@ -55,6 +56,10 @@ HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager ()
     WaveDebugServerPage *pWaveDebugServerPage = new WaveDebugServerPage (this, "/debug");
 
     waveAssert (NULL != pWaveDebugServerPage, __FILE__, __LINE__);
+
+    WaveContentServerPage *pWaveContentServerPage = new WaveContentServerPage (this, "/content/*");
+
+    waveAssert (NULL != pWaveContentServerPage, __FILE__, __LINE__);
 
     addDebugFunction ((ShellCmdFunction) (&WaveServerPageDirectory::print), "printwaveserverpagetree");
 }
