@@ -3,6 +3,8 @@
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
+
+#include <Framework/ObjectModel/WaveLocalManagedObject.h>
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmTable.h"
 #include "Framework/Types/Types.h"
@@ -45,6 +47,7 @@
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
 
 #include <algorithm>
+#include <set>
 
 namespace WaveNs
 {
@@ -917,6 +920,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
     // Argument parsing variables
     UI32                numberOfArguments               = argv.size ();
     bool                isDotFormatEnabled              = false;
+    bool                isPlantUmlFormatEnabled         = false;
     bool                skipArg                         = true;
     UI32                numberOfFilteredManagedObjects  = 0;
     vector<string>      filteredManagedObjectsVector;
@@ -950,6 +954,11 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         else if ("--dot" == argv[i] || "-d" ==  argv[i])
         {
             isDotFormatEnabled = true;
+            skipArg = false;
+        }
+        else if ("--plantuml" == argv[i] || "-p" ==  argv[i])
+        {
+            isPlantUmlFormatEnabled = true;
             skipArg = false;
         }
         else
@@ -1011,6 +1020,10 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         }
     }
 
+    set<string> predefinedMostBaseClasses;
+
+    getPredefinedMostBaseClasses (predefinedMostBaseClasses);
+
     if (true == isDotFormatEnabled)
     {
         ormOutput += string ("digraph WaveManagedObjectClassDiagram") + "\r\n";
@@ -1019,8 +1032,30 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         ormOutput += string ("    rankdir=LR;") + "\r\n";
 
         ormOutput += string ("    WaveLocalManagedObject -> WaveManagedObject;") + "\r\n";
-        ormOutput += string ("    DcmManagedObject -> WaveManagedObject;") + "\r\n";
-        ormOutput += string ("    DcmLocalManagedObject -> WaveLocalManagedObject;") + "\r\n";
+
+        set<string>::const_iterator element    = predefinedMostBaseClasses.begin ();
+        set<string>::const_iterator endElement = predefinedMostBaseClasses.end   ();
+
+        while (endElement != element)
+        {
+            const string className = *element;
+
+            if (((WaveManagedObject::getClassName ()) != className) && ((WaveLocalManagedObject::getClassName ()) != className) && ((WavePersistableObject::getClassName ()) != className))
+            {
+                ormOutput += className + " -> ";
+
+                if (string::npos != (className.find ("Local")))
+                {
+                    ormOutput += WaveLocalManagedObject::getClassName () + ";\r\n";
+                }
+                else
+                {
+                    ormOutput += WaveManagedObject::getClassName () + ";\r\n";
+                }
+            }
+
+            element++;
+        }
 
         for (i = 0; i < numberOfTables; i++)
         {
@@ -1122,6 +1157,136 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         }
 
         ormOutput += string ("}") + "\r\n";
+    }
+
+    if (true == isPlantUmlFormatEnabled)
+    {
+        ormOutput += string ("@startuml\r\n");
+        ormOutput += string ("\r\n");
+        ormOutput += string ("skinparam linetype ortho\r\n");
+        ormOutput += string ("\r\n");
+
+        ormOutput += string ("WaveLocalManagedObject --|> WaveManagedObject") + "\r\n";
+
+        set<string>::const_iterator element    = predefinedMostBaseClasses.begin ();
+        set<string>::const_iterator endElement = predefinedMostBaseClasses.end   ();
+
+        while (endElement != element)
+        {
+            const string className = *element;
+
+            if (((WaveManagedObject::getClassName ()) != className) && ((WaveLocalManagedObject::getClassName ()) != className) && ((WavePersistableObject::getClassName ()) != className))
+            {
+                ormOutput += className + " --|> ";
+
+                if (string::npos != (className.find ("Local")))
+                {
+                    ormOutput += WaveLocalManagedObject::getClassName () + "\r\n";
+                }
+                else
+                {
+                    ormOutput += WaveManagedObject::getClassName () + "\r\n";
+                }
+            }
+
+            element++;
+        }
+
+        ormOutput += string ("\r\n");
+
+        for (i = 0; i < numberOfTables; i++)
+        {
+            pOrmTable = pOrmRepository->m_tables[i];
+
+            waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
+
+            // Print ORM table information when no filtering is given or only if when a specified filtering matches
+
+            if ((0 == numberOfFilteredManagedObjects) ||
+                (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getDerivedFromClassName ())) )
+            {
+                ormOutput += pOrmTable->getName () + " --|>  " + pOrmTable->getDerivedFromClassName () + "\r\n";
+            }
+
+            vector<string>             relatedToTables;
+            vector<OrmRelationType>    relationTypes;
+            vector<OrmRelationUmlType> relationUmlTypes;
+
+            pOrmTable->getDetailsForRelationships (relatedToTables, relationTypes, relationUmlTypes);
+
+            UI32 numberOfRelations = relatedToTables.size ();
+            UI32 j                 = 0;
+
+            for (j = 0; j < numberOfRelations; j++)
+            {
+                if (ORM_RELATION_UML_TYPE_ASSOCIATION == relationUmlTypes[j])
+                {
+                    if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"1\" -down-> \"1\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"1\" -down-> \"*\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                }
+                else if (ORM_RELATION_UML_TYPE_AGGREGATION == relationUmlTypes[j])
+                {
+                    if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"1\" o-down-> \"1\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"\" o-down-> \"*\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                }
+                else if (ORM_RELATION_UML_TYPE_COMPOSITION == relationUmlTypes[j])
+                {
+                    if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"1\" *-down-> \"1\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        if ((0 == numberOfFilteredManagedObjects) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
+                            (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
+                        {
+                            ormOutput += pOrmTable->getName () + " \"1\" *-down-> \"*\" " + relatedToTables[j] + "\r\n";
+                        }
+                    }
+                }
+            }
+        }
+
+        ormOutput += "\r\n" + string ("@enduml") + "\r\n";
     }
 
     return (0);
@@ -1867,6 +2032,25 @@ bool OrmRepository::isAMostBaseClass (const string &mostBaseClass)
     else
     {
         return (false);
+    }
+}
+
+void OrmRepository::getPredefinedMostBaseClasses (set<string> &predefinedMostBaseClasses)
+{
+    OrmRepository *pOrmRepository = getInstance ();
+
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+
+    map<string, string>::iterator element    = (pOrmRepository->m_mostBaseClassesMap).begin ();
+    map<string, string>::iterator endElement = (pOrmRepository->m_mostBaseClassesMap).end   ();
+
+    predefinedMostBaseClasses.clear ();
+
+    while (endElement != element)
+    {
+        predefinedMostBaseClasses.insert (element->first);
+
+        element++;
     }
 }
 

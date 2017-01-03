@@ -172,6 +172,8 @@ class OrmRepository
         static       bool                       isManagedClassAView                           (const string &managedClass);
         static       bool                       isManagedClassATable                          (const string &managedClass);
 
+        static       void                       getPredefinedMostBaseClasses                  (set<string> &predefinedMostBaseClasses);
+
     // Now the data members
 
     private :
