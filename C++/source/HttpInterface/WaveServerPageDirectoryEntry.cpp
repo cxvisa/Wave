@@ -107,6 +107,13 @@
             {
                 return (NULL);
             }
+            else
+            {
+                if (("*" == (pTempWaveServerPageDirectoryEntry->m_nodeName)) && ((pTempWaveServerPageDirectoryEntry->m_siblingsMap).empty ()))
+                {
+                    break;
+                }
+            }
         }
 
         return (pTempWaveServerPageDirectoryEntry);
