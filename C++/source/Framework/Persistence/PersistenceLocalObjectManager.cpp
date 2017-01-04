@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2010 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2017 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
- *   Author : Vipool Prajapati                                             *
+ *   Author : Vidyasagara Guntaka                                          *
  ***************************************************************************/
 
 #include "Framework/Persistence/PersistenceLocalObjectManager.h"
@@ -30,6 +30,8 @@
 #include "Framework/ObjectModel/WaveClientSessionContext.h"
 #include "Framework/ObjectModel/WaveObjectManagerToolKit.h"
 #include "Framework/ObjectModel/Rest/WaveObjectModelWaveServerPage.h"
+#include "Framework/ObjectModel/Rest/WaveObjectModelPlantUmlWaveServerPage.h"
+#include "Framework/ObjectModel/Rest/WaveObjectModelPlantUmlDisplayWaveServerPage.h"
 
 namespace WaveNs
 {
@@ -70,6 +72,14 @@ PersistenceLocalObjectManager::PersistenceLocalObjectManager ()
     m_pWaveObjectModelWaveServerPage = new WaveObjectModelWaveServerPage ();
 
     waveAssert (NULL != m_pWaveObjectModelWaveServerPage, __FILE__, __LINE__);
+
+    m_pWaveObjectModelPlantUmlWaveServerPage = new WaveObjectModelPlantUmlWaveServerPage ();
+
+    waveAssert (NULL != m_pWaveObjectModelPlantUmlWaveServerPage, __FILE__, __LINE__);
+
+    m_pWaveObjectModelPlantUmlDisplayWaveServerPage = new WaveObjectModelPlantUmlDisplayWaveServerPage ();
+
+    waveAssert (NULL != m_pWaveObjectModelPlantUmlDisplayWaveServerPage, __FILE__, __LINE__);
 }
 
 PersistenceLocalObjectManager::~PersistenceLocalObjectManager ()
@@ -77,6 +87,16 @@ PersistenceLocalObjectManager::~PersistenceLocalObjectManager ()
     if (NULL != m_pWaveObjectModelWaveServerPage)
     {
         delete m_pWaveObjectModelWaveServerPage;
+    }
+
+    if (NULL != m_pWaveObjectModelPlantUmlWaveServerPage)
+    {
+        delete m_pWaveObjectModelPlantUmlWaveServerPage;
+    }
+
+    if (NULL != m_pWaveObjectModelPlantUmlDisplayWaveServerPage)
+    {
+        delete m_pWaveObjectModelPlantUmlDisplayWaveServerPage;
     }
 }
 
@@ -711,7 +731,7 @@ void PersistenceLocalObjectManager::handleTransactionResult (PersistenceLocalExe
     ResourceId status             = WAVE_MESSAGE_SUCCESS;
 
     // If live sync is disabled, or live sync is enabled with active and standby get the same transaction result
-	if ((false == getLiveSyncEnabled ()) || ((true == getLiveSyncEnabled ()) && (((activeResult == WAVE_MESSAGE_SUCCESS) && (standbyResult == WAVE_MESSAGE_SUCCESS)) || ((activeResult != WAVE_MESSAGE_SUCCESS) && (standbyResult != WAVE_MESSAGE_SUCCESS)))))
+  if ((false == getLiveSyncEnabled ()) || ((true == getLiveSyncEnabled ()) && (((activeResult == WAVE_MESSAGE_SUCCESS) && (standbyResult == WAVE_MESSAGE_SUCCESS)) || ((activeResult != WAVE_MESSAGE_SUCCESS) && (standbyResult != WAVE_MESSAGE_SUCCESS)))))
     {
          status = activeResult;
     }

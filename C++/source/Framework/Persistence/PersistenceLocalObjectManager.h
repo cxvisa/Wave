@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2010 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2017 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
- *   Author : Vipool Prajapati                                             *
+ *   Author : Vidyasagara Guntaka                                          *
  ***************************************************************************/
 
 #ifndef PERSISTENCELOCALOBJECTMANAGER_H
@@ -30,6 +30,8 @@ class PersistenceLocalObjectManagerGetLiveSyncEnableMessage;
 class PersistenceLocalExecuteTransactionContext;
 class DatabaseObjectManagerExecuteTransactionMessage;
 class WaveObjectModelWaveServerPage;
+class WaveObjectModelPlantUmlWaveServerPage;
+class WaveObjectModelPlantUmlDisplayWaveServerPage;
 
 typedef ResourceId  (*UpdateGlobalConfigInKernelHandlerFunction)       (string &globalConfigs);
 
@@ -92,7 +94,9 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
         static  WaveMutex                      m_anyConfiguraitonChangeTrackingNumberMutex;
         static  UpdateGlobalConfigInKernelHandlerFunction m_updateGlobalConfigInKernelHandlerFunction;
 
-        WaveObjectModelWaveServerPage *m_pWaveObjectModelWaveServerPage;
+        WaveObjectModelWaveServerPage                *m_pWaveObjectModelWaveServerPage;
+        WaveObjectModelPlantUmlWaveServerPage        *m_pWaveObjectModelPlantUmlWaveServerPage;
+        WaveObjectModelPlantUmlDisplayWaveServerPage *m_pWaveObjectModelPlantUmlDisplayWaveServerPage;
 
     protected :
     public :

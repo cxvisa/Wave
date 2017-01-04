@@ -1292,6 +1292,154 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
     return (0);
 }
 
+ResourceId OrmRepository::getPlantUmlOrm (const set<string> &filters, string &ormOutput)
+{
+    OrmRepository *pOrmRepository = OrmRepository::getInstance ();
+
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+
+    UI32      numberOfTables                = pOrmRepository->m_tables.size ();
+    UI32      i                             = 0;
+    OrmTable *pOrmTable                     = NULL;
+    string    isALocalManagedObjectString   = "false";
+
+
+    UI32 numberOfFilteredManagedObjects  = filters.size ();
+
+    set<string> predefinedMostBaseClasses;
+
+    getPredefinedMostBaseClasses (predefinedMostBaseClasses);
+
+    ormOutput += string ("@startuml\r\n");
+    ormOutput += string ("\r\n");
+    ormOutput += string ("skinparam linetype ortho\r\n");
+    ormOutput += string ("\r\n");
+
+    ormOutput += string ("WaveLocalManagedObject --|> WaveManagedObject") + "\r\n";
+
+    set<string>::const_iterator element    = predefinedMostBaseClasses.begin ();
+    set<string>::const_iterator endElement = predefinedMostBaseClasses.end   ();
+
+    while (endElement != element)
+    {
+        const string className = *element;
+
+        if (((WaveManagedObject::getClassName ()) != className) && ((WaveLocalManagedObject::getClassName ()) != className) && ((WavePersistableObject::getClassName ()) != className))
+        {
+            ormOutput += className + " --|> ";
+
+            if (string::npos != (className.find ("Local")))
+            {
+                ormOutput += WaveLocalManagedObject::getClassName () + "\r\n";
+            }
+            else
+            {
+                ormOutput += WaveManagedObject::getClassName () + "\r\n";
+            }
+        }
+
+        element++;
+    }
+
+    ormOutput += string ("\r\n");
+
+    for (i = 0; i < numberOfTables; i++)
+    {
+        pOrmTable = pOrmRepository->m_tables[i];
+
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
+
+        // Print ORM table information when no filtering is given or only if when a specified filtering matches
+
+        if ((0 == numberOfFilteredManagedObjects) ||
+            (filters.end () != filters.find (pOrmTable->getName ())) ||
+            (filters.end () != filters.find (pOrmTable->getDerivedFromClassName ())) )
+        {
+            ormOutput += pOrmTable->getName () + " --|>  " + pOrmTable->getDerivedFromClassName () + "\r\n";
+        }
+
+        vector<string>             relatedToTables;
+        vector<OrmRelationType>    relationTypes;
+        vector<OrmRelationUmlType> relationUmlTypes;
+
+        pOrmTable->getDetailsForRelationships (relatedToTables, relationTypes, relationUmlTypes);
+
+        UI32 numberOfRelations = relatedToTables.size ();
+        UI32 j                 = 0;
+
+        for (j = 0; j < numberOfRelations; j++)
+        {
+            if (ORM_RELATION_UML_TYPE_ASSOCIATION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"1\" -down-> \"1\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"1\" -down-> \"*\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+            }
+            else if (ORM_RELATION_UML_TYPE_AGGREGATION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"1\" o-down-> \"1\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"\" o-down-> \"*\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+            }
+            else if (ORM_RELATION_UML_TYPE_COMPOSITION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"1\" *-down-> \"1\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += pOrmTable->getName () + " \"1\" *-down-> \"*\" " + relatedToTables[j] + "\r\n";
+                    }
+                }
+            }
+        }
+    }
+
+    ormOutput += "\r\n" + string ("@enduml") + "\r\n";
+
+    return (0);
+}
+
 void OrmRepository::getAllMostBaseTableNames (vector<string> &mostBaseTableNames)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
