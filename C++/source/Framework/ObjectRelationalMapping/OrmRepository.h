@@ -97,6 +97,7 @@ class OrmRepository
         static       ResourceId                 printOrmDebugShellWrapper                     (UI32 argc, vector<string> argv);
         static       ResourceId                 printOrm                                      (UI32 argc, vector<string> argv, string &ormOutput);
         static       ResourceId                 getPlantUmlOrm                                (const set<string> &filters, string &ormOutput);
+        static       ResourceId                 getDotGraphOrm                                (const set<string> &filters, string &ormOutput);
 
         static       void                       getAllMostBaseTableNames                      (vector<string> &mostBaseTableNames);
         static       void                       updateLatestInstanceIdForTable                (const string &tableName, const UI32 &latestInstanceId);

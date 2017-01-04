@@ -1440,6 +1440,158 @@ ResourceId OrmRepository::getPlantUmlOrm (const set<string> &filters, string &or
     return (0);
 }
 
+ResourceId OrmRepository::getDotGraphOrm (const set<string> &filters, string &ormOutput)
+{
+    OrmRepository *pOrmRepository = OrmRepository::getInstance ();
+
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+
+    UI32      numberOfTables = pOrmRepository->m_tables.size ();
+    UI32      i              = 0;
+    OrmTable *pOrmTable      = NULL;
+
+    const UI32 numberOfFilteredManagedObjects  = filters.size ();
+
+    set<string> predefinedMostBaseClasses;
+
+    getPredefinedMostBaseClasses (predefinedMostBaseClasses);
+
+
+    ormOutput += string ("digraph WaveManagedObjectClassDiagram") + "\r\n";
+    ormOutput += string ("{") + "\r\n";
+    ormOutput += string ("    node [style=filled,color=\".7 .3 1.0\"];") + "\r\n";
+    ormOutput += string ("    rankdir=LR;") + "\r\n";
+
+    ormOutput += string ("    WaveLocalManagedObject -> WaveManagedObject;") + "\r\n";
+
+    set<string>::const_iterator element    = predefinedMostBaseClasses.begin ();
+    set<string>::const_iterator endElement = predefinedMostBaseClasses.end   ();
+
+    while (endElement != element)
+    {
+        const string className = *element;
+
+        if (((WaveManagedObject::getClassName ()) != className) && ((WaveLocalManagedObject::getClassName ()) != className) && ((WavePersistableObject::getClassName ()) != className))
+        {
+            ormOutput += className + " -> ";
+
+            if (string::npos != (className.find ("Local")))
+            {
+                ormOutput += WaveLocalManagedObject::getClassName () + ";\r\n";
+            }
+            else
+            {
+                ormOutput += WaveManagedObject::getClassName () + ";\r\n";
+            }
+        }
+
+        element++;
+    }
+
+    for (i = 0; i < numberOfTables; i++)
+    {
+        pOrmTable = pOrmRepository->m_tables[i];
+
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
+
+        // Print ORM table information when no filtering is given or only if when a specified filtering matches
+
+        if ((0 == numberOfFilteredManagedObjects) ||
+            (filters.end () != filters.find (pOrmTable->getName ())) ||
+            (filters.end () != filters.find (pOrmTable->getDerivedFromClassName ())) )
+        {
+            ormOutput += string ("    edge [style=solid,dir=forward,color=black,arrowhead=normal];") + "\r\n";
+            ormOutput += string ("    ") + pOrmTable->getName () + " ->  " + pOrmTable->getDerivedFromClassName () + "\r\n";
+        }
+
+        vector<string>             relatedToTables;
+        vector<OrmRelationType>    relationTypes;
+        vector<OrmRelationUmlType> relationUmlTypes;
+
+        pOrmTable->getDetailsForRelationships (relatedToTables, relationTypes, relationUmlTypes);
+
+        UI32 numberOfRelations = relatedToTables.size ();
+        UI32 j                 = 0;
+
+        for (j = 0; j < numberOfRelations; j++)
+        {
+            if (ORM_RELATION_UML_TYPE_ASSOCIATION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=dotted,dir=forward,color=blue,arrowhead=normal];") + "\r\n";
+                        ormOutput += string ("        ") + pOrmTable->getName () + " -> " + relatedToTables[j] + ";" + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=solid,dir=forward,color=blue,arrowhead=normal];") + "\r\n";
+                        ormOutput += string ("        ") + pOrmTable->getName () + " -> " + relatedToTables[j] + ";" + "\r\n";
+                    }
+                }
+            }
+            else if (ORM_RELATION_UML_TYPE_AGGREGATION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=dotted,dir=forward,color=green,arrowhead=odiamond];") + "\r\n";
+                        ormOutput += string ("        ") + relatedToTables[j] + " -> " + pOrmTable->getName () + ";" + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=solid,dir=forward,color=green,arrowhead=odiamond];") + "\r\n";
+                        ormOutput += string ("        ") + relatedToTables[j] + " -> " + pOrmTable->getName () + ";" + "\r\n";
+                    }
+                }
+            }
+            else if (ORM_RELATION_UML_TYPE_COMPOSITION == relationUmlTypes[j])
+            {
+                if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=dotted,dir=forward,color=red,arrowhead=diamond];") + "\r\n";
+                        ormOutput += string ("        ") + relatedToTables[j] + " -> " + pOrmTable->getName () + ";" + "\r\n";
+                    }
+                }
+                else
+                {
+                    if ((0 == numberOfFilteredManagedObjects) ||
+                        (filters.end () != filters.find (pOrmTable->getName ())) ||
+                        (filters.end () != filters.find (relatedToTables[j])) )
+                    {
+                        ormOutput += string ("        edge [style=solid,dir=forward,color=red,arrowhead=diamond];") + "\r\n";
+                        ormOutput += string ("        ") + relatedToTables[j] + " -> " + pOrmTable->getName () + ";" + "\r\n";
+                    }
+                }
+            }
+        }
+    }
+
+    ormOutput += string ("}") + "\r\n";
+
+    return (0);
+}
+
 void OrmRepository::getAllMostBaseTableNames (vector<string> &mostBaseTableNames)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();

@@ -32,6 +32,8 @@ class DatabaseObjectManagerExecuteTransactionMessage;
 class WaveObjectModelWaveServerPage;
 class WaveObjectModelPlantUmlWaveServerPage;
 class WaveObjectModelPlantUmlDisplayWaveServerPage;
+class WaveObjectModelDotGraphWaveServerPage;
+class WaveObjectModelDotGraphDisplayWaveServerPage;
 
 typedef ResourceId  (*UpdateGlobalConfigInKernelHandlerFunction)       (string &globalConfigs);
 
@@ -97,6 +99,8 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
         WaveObjectModelWaveServerPage                *m_pWaveObjectModelWaveServerPage;
         WaveObjectModelPlantUmlWaveServerPage        *m_pWaveObjectModelPlantUmlWaveServerPage;
         WaveObjectModelPlantUmlDisplayWaveServerPage *m_pWaveObjectModelPlantUmlDisplayWaveServerPage;
+        WaveObjectModelDotGraphWaveServerPage        *m_pWaveObjectModelDotGraphWaveServerPage;
+        WaveObjectModelDotGraphDisplayWaveServerPage *m_pWaveObjectModelDotGraphDisplayWaveServerPage;
 
     protected :
     public :

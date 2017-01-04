@@ -32,6 +32,8 @@
 #include "Framework/ObjectModel/Rest/WaveObjectModelWaveServerPage.h"
 #include "Framework/ObjectModel/Rest/WaveObjectModelPlantUmlWaveServerPage.h"
 #include "Framework/ObjectModel/Rest/WaveObjectModelPlantUmlDisplayWaveServerPage.h"
+#include "Framework/ObjectModel/Rest/WaveObjectModelDotGraphWaveServerPage.h"
+#include "Framework/ObjectModel/Rest/WaveObjectModelDotGraphDisplayWaveServerPage.h"
 
 namespace WaveNs
 {
@@ -80,6 +82,14 @@ PersistenceLocalObjectManager::PersistenceLocalObjectManager ()
     m_pWaveObjectModelPlantUmlDisplayWaveServerPage = new WaveObjectModelPlantUmlDisplayWaveServerPage ();
 
     waveAssert (NULL != m_pWaveObjectModelPlantUmlDisplayWaveServerPage, __FILE__, __LINE__);
+
+    m_pWaveObjectModelDotGraphWaveServerPage = new  WaveObjectModelDotGraphWaveServerPage ();
+
+    waveAssert (NULL != m_pWaveObjectModelDotGraphWaveServerPage, __FILE__, __LINE__);
+
+    m_pWaveObjectModelDotGraphDisplayWaveServerPage = new WaveObjectModelDotGraphDisplayWaveServerPage ();
+
+    waveAssert (NULL != m_pWaveObjectModelDotGraphDisplayWaveServerPage, __FILE__, __LINE__);
 }
 
 PersistenceLocalObjectManager::~PersistenceLocalObjectManager ()
@@ -97,6 +107,16 @@ PersistenceLocalObjectManager::~PersistenceLocalObjectManager ()
     if (NULL != m_pWaveObjectModelPlantUmlDisplayWaveServerPage)
     {
         delete m_pWaveObjectModelPlantUmlDisplayWaveServerPage;
+    }
+
+    if (NULL != m_pWaveObjectModelDotGraphWaveServerPage)
+    {
+        delete m_pWaveObjectModelDotGraphWaveServerPage;
+    }
+
+    if (NULL != m_pWaveObjectModelDotGraphDisplayWaveServerPage)
+    {
+        delete m_pWaveObjectModelDotGraphDisplayWaveServerPage;
     }
 }
 
