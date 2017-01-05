@@ -4,6 +4,9 @@ var menuPanePlantUmlPng = document.getElementById ('PlantUmlPng');
 var menuPaneDotGraph    = document.getElementById ('DotGraph');
 var menuPaneDotGraphPng = document.getElementById ('DotGraphPng')
 var contentImage        = document.getElementById ('ContentImage');
+var expandButton        = document.getElementById ('ExpandButton');
+var contractButton      = document.getElementById ('ContractButton');
+var currentImageWidth   = 100;
 
 menuPanePlantUml.onclick = function ()
 {
@@ -113,12 +116,53 @@ contentImage.onclick = function ()
 
     if ('AUTO' === imageWidth)
     {
-        contentImage.setAttribute ('WIDTH',  '100%');
+        //contentImage.setAttribute ('WIDTH',  '100%');
     }
     else
     {
-        contentImage.setAttribute ('WIDTH',  'AUTO');
+        //contentImage.setAttribute ('WIDTH',  'AUTO');
     }
 
-    contentImage.setAttribute ('HEIGHT', 'AUTO');
+    //contentImage.setAttribute ('HEIGHT', 'AUTO');
 }
+
+contentImage.onmouseup = function (event)
+{
+    var element = contentImage;
+
+    var x = element.offsetLeft;
+    var y = element.offsetTop;
+
+    element = element.offsetParent;
+
+    while (null != element)
+    {
+        x = parseInt (x) + parseInt (element.offsetLeft);
+        y = parseInt (y) + parseInt (element.offsetTop);
+
+	element = element.offsetParent;
+    }
+
+    window.scrollBy (parseInt (event.clientX) - (parseInt (document.body.clientWidth) / 2),  parseInt (event.clientY) - (parseInt (document.body.clientHeight) / 2));
+}
+
+contractButton.onclick = function ()
+{
+    if (currentImageWidth > 50)
+    {
+        currentImageWidth -= 10;
+    }
+
+    contentImage.setAttribute ('WIDTH', currentImageWidth + '%');
+}
+
+expandButton.onclick = function ()
+{
+    if (currentImageWidth < 300)
+    {
+        currentImageWidth += 10;
+    }
+
+    contentImage.setAttribute ('WIDTH', currentImageWidth + '%');
+}
+
