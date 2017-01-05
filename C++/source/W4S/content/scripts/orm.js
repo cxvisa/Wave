@@ -5,6 +5,7 @@ var menuPaneDotGraph    = document.getElementById ('DotGraph');
 var menuPaneDotGraphPng = document.getElementById ('DotGraphPng')
 var contentImage        = document.getElementById ('ContentImage');
 var expandButton        = document.getElementById ('ExpandButton');
+var fitWidthButton      = document.getElementById ('FitWidthButton');
 var contractButton      = document.getElementById ('ContractButton');
 var currentImageWidth   = 100;
 
@@ -143,7 +144,7 @@ contentImage.onmouseup = function (event)
 	element = element.offsetParent;
     }
 
-    window.scrollBy (parseInt (event.clientX) - (parseInt (document.body.clientWidth) / 2),  parseInt (event.clientY) - (parseInt (document.body.clientHeight) / 2));
+    contentPane.scrollBy (parseInt (event.clientX) - (parseInt (document.body.clientWidth) / 2),  parseInt (event.clientY) - (parseInt (document.body.clientHeight) / 2));
 }
 
 contractButton.onclick = function ()
@@ -156,9 +157,16 @@ contractButton.onclick = function ()
     contentImage.setAttribute ('WIDTH', currentImageWidth + '%');
 }
 
+fitWidthButton.onclick = function ()
+{
+    currentImageWidth = 100;
+
+    contentImage.setAttribute ('WIDTH', currentImageWidth + '%');
+}
+
 expandButton.onclick = function ()
 {
-    if (currentImageWidth < 300)
+    if (currentImageWidth < 1000)
     {
         currentImageWidth += 10;
     }
