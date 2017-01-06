@@ -4,6 +4,7 @@ var menuPanePlantUmlPng = document.getElementById ('PlantUmlPng');
 var menuPaneDotGraph    = document.getElementById ('DotGraph');
 var menuPaneDotGraphPng = document.getElementById ('DotGraphPng')
 var contentImage        = document.getElementById ('ContentImage');
+var contentIFrame       = document.getElementById ('ContentIFrame');
 var expandButton        = document.getElementById ('ExpandButton');
 var fitWidthButton      = document.getElementById ('FitWidthButton');
 var contractButton      = document.getElementById ('ContractButton');
@@ -27,6 +28,7 @@ menuPanePlantUml.onclick = function ()
 	contentIFrame.setAttribute ('WIDTH',       '100%');
 	contentIFrame.setAttribute ('HEIGHT',      '100%');
 	contentIFrame.setAttribute ('FRAMEBORDER', '0');
+	contentIFrame.setAttribute ('BORDER',      'none');
 
 	contentPane.appendChild (contentIFrame);
     }
@@ -54,6 +56,8 @@ menuPanePlantUmlPng.onclick = function ()
 	contentPane.appendChild (contentImage);
     }
 
+    document.body.style.cursor = 'WAIT';
+
     contentImage.setAttribute ('SRC', '/Wave/Rest/ObjectModel/plantUml.png');
     contentImage.style.display = 'BLOCK';
     contentImage.setAttribute ('WIDTH',  '100%');
@@ -78,9 +82,12 @@ menuPaneDotGraph.onclick = function ()
 	contentIFrame.setAttribute ('WIDTH',       '100%');
 	contentIFrame.setAttribute ('HEIGHT',      '100%');
 	contentIFrame.setAttribute ('FRAMEBORDER', '0');
+	contentIFrame.setAttribute ('BORDER',      'none');
 
 	contentPane.appendChild (contentIFrame);
     }
+
+    document.body.style.cursor = 'WAIT';
 
     contentIFrame.setAttribute ('SRC', '/Wave/Rest/ObjectModel/dotGraph');
     contentIFrame.style.display = 'BLOCK';
@@ -104,6 +111,8 @@ menuPaneDotGraphPng.onclick = function ()
 
 	contentPane.appendChild (contentImage);
     }
+
+    document.body.style.cursor = 'WAIT';
 
     contentImage.setAttribute ('SRC', '/Wave/Rest/ObjectModel/dotGraph.png');
     contentImage.style.display = 'BLOCK';
@@ -172,5 +181,37 @@ expandButton.onclick = function ()
     }
 
     contentImage.setAttribute ('WIDTH', currentImageWidth + '%');
+}
+
+contentImage.onload = function ()
+{
+    expandButton.style.display   = 'BLOCK';
+    fitWidthButton.style.display = 'BLOCK';
+    contractButton.style.display = 'BLOCK';
+
+    document.body.style.cursor = 'DEFAULT';
+}
+
+contentImage.onerror = function ()
+{
+    document.body.style.cursor = 'DEFAULT';
+}
+
+contentIFrame.onload = function ()
+{
+    expandButton.style.display   = 'NONE';
+    fitWidthButton.style.display = 'NONE';
+    contractButton.style.display = 'NONE';
+
+    document.body.style.cursor = 'DEFAULT';
+}
+
+contentIFrame.onerror = function ()
+{
+    expandButton.style.display   = 'NONE';
+    fitWidthButton.style.display = 'NONE';
+    contractButton.style.display = 'NONE';
+
+    document.body.style.cursor = 'DEFAULT';
 }
 
