@@ -279,7 +279,7 @@ expandMenuPaneButton.onclick = function ()
         contentPane.style.width ='95%';
 
         menuPaneOptions.style.display = 'NONE';
-        compactMenuPaneOptions.style.display = 'BLOCK';
+        compactMenuPaneOptions.style.display = 'TABLE';
 
         isMenuPaneExpanded = false;
     }
