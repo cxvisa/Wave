@@ -363,7 +363,14 @@ void HttpToolKit::getOkStringWithContentTypeAndLength (string &okString, const s
 {
     okString  = "HTTP/1.1 200 OK\r\n";
     okString += "Server: Wave World Wide Web Server (W4S) v0.0.1\r\n";
-    okString += "Content-Type: " + contentType + "\r\n";
+    okString += "Content-Type: " + contentType;
+
+    if ("text/html" == contentType)
+    {
+        okString += "; charset : utf-8";
+    }
+
+    okString += "\r\n";
     okString += string ("Content-Length: ") + contentLength + "\r\n";
     okString += "\r\n";
 }

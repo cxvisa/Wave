@@ -1,110 +1,237 @@
 <HTML>
-<HEAD>
-<STYLE>
-A:VISITED
-{
-COLOR:RGB(255, 0 ,0);
-TEXT-DECORATION:NONE;
-}
-TABLE
-{
-BORDER-COLLAPSE:COLLAPSE;
-LEFT-MARGIN:AUTO;
-RIGHT-MARGIN:AUTO;
-}
-TABLE, TD, TH
-{
-BORDER:1PX SOLID RED;
-}
-A:LINK
-{
-COLOR:RGB(0, 0 ,255);
-TEXT-DECORATION:NONE;
-}
-A:HOVER
-{
-COLOR:RGB(0, 255 ,0)
-}
-A:ACTIVE
-{
-COLOR:RGB(255, 255 ,0)
-}
-DIV.FIXEDMOSTBOTTOM {
-    POSITION: FIXED;
-    BOTTOM: 0px;
-    BORDER: 0px;
-    PADDING: 0px;
-}
-DIV.FIXED {
-    POSITION: FIXED;
-    BOTTOM: 20px;
-    RIGHT: 20px;
-}
-DIV.DIVSCROLL {
-    OVERFLOW-X: auto
-}
-BUTTON.ZOOM
-{
-    WIDTH : 30px;
-    DISPLAY : NONE;
-    OUTLINE : NONE;
-    BORDER : NONE;
-    BACKGROUND-COLOR : TRANSPARENT;
-    BACKGROUND : RGBA (255, 255, 255, .10);
-    COLOR : #333;
-    BORDER-RADIUS: 8px;
-    TRANSITION: ALL 0.3S EASE-OUT;
-    FONT-WEIGHT : BOLDER
-}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-BUTTON.ZOOM:HOVER
-{
-    BACKGROUND : #777;
-}
+    <HEAD>
+        <STYLE>
+            A:VISITED
+            {
+              COLOR           : RGB(255, 0 ,0);
+              TEXT-DECORATION : NONE;
+            }
 
-</STYLE>
-</HEAD>
-<BODY LINK="COLOR:RGB(255,0,0)" VLINK="COLOR:RGB(0, 255, 0)" ALINK="COLOR:RGB(0, 0, 255)">
-<DIV id="EntirePage" STYLE="BACKGROUND-COLOR:RGB(255, 255, 255)">
-<DIV id="Header" STYLE="WIDTH:100%;HEIGHT:5%;BACKGROUND-COLOR:RGB(255, 255,255);COLOR:RGB(200, 200, 200);TEXT-ALIGN:CENTER;">
-<A>
-<H1 STYLE="MARGIN-BOTTOM:0">Wave World Wide Web Server (W4S)</H1>
-</A>
-</DIV>
-<DIV id="HeaderOptions" STYLE="WIDTH:100%; BACKGROUND-COLOR:RGB(0, 0,0);COLOR:RGB(255, 255, 255);TEXT-ALIGN:CENTER;FLOAT:LEFT">
-<P></P>
-</DIV>
-<DIV CLASS="FIXEDMOSTBOTTOM" id="HeaderOptions" STYLE="WIDTH:100%; BACKGROUND-COLOR:RGB(0, 0,0);COLOR:RGB(255, 255, 255);TEXT-ALIGN:CENTER;FLOAT:LEFT">
-<A HREF="/content/index.html">Home</A>
- | 
-<A HREF="/content/about.html">About</A>
- | 
-<A HREF="/content/contactus.html">Contact Us</A>
-</DIV>
-</BR>
-<DIV id="MenuPane" STYLE="WIDTH:10%;HEIGHT:92%;BACKGROUND-COLOR:RGB(200,200,255);COLOR:RGB(255,255,255);TEXT-ALIGN:LEFT;FLOAT:LEFT">
-<UL>
-<LI><A ID="PlantUml"    STYLE="CURSOR:POINTER">Plant UML</A></BR></LI>
-<LI><A ID="PlantUmlPng" STYLE="CURSOR:POINTER">Plant UML (PNG)</A></BR></LI>
-<LI><A ID="DotGraph"    STYLE="CURSOR:POINTER">DOT Graph</A></BR></LI>
-<LI><A ID="DotGraphPng" STYLE="CURSOR:POINTER">DOT Graph (PNG)</A></BR></LI>
-</UL>
-</DIV>
-<DIV CLASS="DIVSCROLL" ID="ContentPane" STYLE="WIDTH:90%; HEIGHT:92%; BACKGROUND-COLOR:RGB(255, 255, 255);COLOR:RGB(0, 0, 0);TEXT-ALIGN:LEFT;FLOAT:LEFT">
-<H2 STYLE="COLOR:RGB(255, 0, 0);TEXT-ALIGN:CENTER;">Wave Object Model</H2>
+            TABLE
+            {
+                ALIGN-SELF : CENTER;
+                BORDER-COLLAPSE : COLLAPSE;
+                MARGIN : 0 AUTO;
+            }
 
-<DIV CLASS="FIXED">
-<BUTTON CLASS="ZOOM" ID="ExpandButton"   TYPE="BUTTON"><B>+</B></BUTTON>
-</BR>
-<BUTTON CLASS="ZOOM" ID="FitWidthButton" TYPE="BUTTON"><B>.</B></BUTTON>
-</BR>
-<BUTTON CLASS="ZOOM" ID="ContractButton" TYPE="BUTTON"><B>-</B></BUTTON>
-</DIV>
-<IMG ID="ContentImage"></IMG>
-<IFRAME ID="ContentIFrame" STYLE="WIDTH:100%; HEIGHT:100%; FRAMEBORDER:0;BORDER:none"></IFRAME>
-</DIV>
-</DIV>
-<SCRIPT SRC="scripts/orm.js"></SCRIPT>
-</BODY>
+            A:LINK
+            {
+                COLOR           : RGB(0, 0 ,255);
+                TEXT-DECORATION : NONE;
+            }
+
+            A:HOVER
+            {
+                COLOR : RGB(0, 255 ,0)
+            }
+
+            A:ACTIVE
+            {
+                COLOR : RGB(255, 255 ,0)
+            }
+
+            DIV.FIXEDMOSTBOTTOM
+            {
+                POSITION : FIXED;
+                BOTTOM   : 0px;
+                BORDER   : 0px;
+                PADDING  : 0px;
+            }
+
+            DIV.FIXED
+            {
+                POSITION : FIXED;
+                BOTTOM   : 20px;
+                RIGHT    : 20px;
+            }
+
+            DIV.MENUPANE
+            {
+                TRANSITION       : ALL 0.3S EASE-OUT;
+            }
+
+            DIV.CONTENTPANE
+            {
+                TRANSITION       : ALL 0.3S EASE-OUT;
+            }
+
+            IMG.CONTENTIMAGE
+            {
+                TRANSITION       : ALL 0.3S EASE-OUT;
+            }
+
+            DIV.FIXEDABSOLUTETOPRIGHT
+            {
+                POSITION         : ABSOLUTE;
+                TOP              : 0px;
+                RIGHT            : 0px;
+
+                WIDTH            : 50px;
+                HEIGHT           : 50px;
+                DISPLAY          : BLOCK;
+                OUTLINE          : NONE;
+                BORDER           : border:10px solid black;
+                BACKGROUND-COLOR : TRANSPARENT;
+                MARGIN : 0 AUTO;
+                TRANSITION       : ALL 0.3S EASE-OUT;
+
+            }
+
+            BUTTON.FIXEDABSOLUTETOPRIGHT
+            {
+                POSITION         : ABSOLUTE;
+                TOP             : 0;
+                RIGHT           : 0;
+
+                //WIDTH            : 30px;
+                DISPLAY          : INLINE-BLOCK;
+                OUTLINE          : NONE;
+                BORDER           : NONE;
+                BACKGROUND-COLOR : TRANSPARENT;
+                BACKGROUND       : RGBA (255, 255, 255, .10);
+                COLOR            : #FFF;
+                BORDER-RADIUS    : 8px;
+                TRANSITION       : ALL 0.3S EASE-OUT;
+                FONT-WEIGHT      : BOLDER;
+                FONT-SIZE        : 250%;
+            }
+
+            BUTTON.FIXEDABSOLUTETOPLEFT
+            {
+                POSITION         : ABSOLUTE;
+                TOP              : 0px;
+                LEFT             : 0px;
+
+                WIDTH            : 30px;
+                DISPLAY          : BLOCK;
+                OUTLINE          : NONE;
+                BORDER           : NONE;
+                BACKGROUND-COLOR : TRANSPARENT;
+                BACKGROUND       : RGBA (255, 255, 255, .10);
+                COLOR            : #FFF;
+                BORDER-RADIUS    : 8px;
+                TRANSITION       : ALL 0.3S EASE-OUT;
+                FONT-WEIGHT      : BOLDER;
+                FONT-SIZE        : 250%;
+            }
+
+            DIV.DIVSCROLL
+            {
+                OVERFLOW-X      : auto;
+
+                TRANSITION      : ALL 0.3S EASE-OUT;
+
+                SCROLL-BEHAVIOR : SMOOTH;
+            }
+
+            BUTTON.ZOOM
+            {
+                WIDTH            : 30px;
+                DISPLAY          : NONE;
+                OUTLINE          : NONE;
+                BORDER           : NONE;
+                BACKGROUND-COLOR : TRANSPARENT;
+                BACKGROUND       : RGBA (255, 255, 255, .10);
+                COLOR            : #333;
+                BORDER-RADIUS    : 8px;
+                TRANSITION       : ALL 0.3S EASE-OUT;
+                FONT-WEIGHT      : BOLDER
+            }
+
+            BUTTON.ZOOM:HOVER
+            {
+                BACKGROUND : #777;
+            }
+
+            DIV.CIRCLE
+            {
+                position: RELATIVE;
+                FLOAT:RIGHT;
+                background-color: #09f;
+                margin: 50px auto;
+                width: 50px;
+                height: 50px;
+                border-radius: 100px;
+                FONT-WEIGHT      : BOLDER;
+                FONT-SIZE        : 250%;
+                BACKGROUND-COLOR:RGB(225,225,255);
+            }
+        </STYLE>
+    </HEAD>
+
+    <BODY LINK="COLOR:RGB(255,0,0)" VLINK="COLOR:RGB(0, 255, 0)" ALINK="COLOR:RGB(0, 0, 255)">
+        <DIV id="EntirePage" STYLE="BACKGROUND-COLOR:RGB(255, 255, 255)">
+            <DIV id="Header" STYLE="WIDTH:100%;HEIGHT:5%;BACKGROUND-COLOR:RGB(255, 255,255);COLOR:RGB(200, 200, 200);TEXT-ALIGN:CENTER;">
+                <A>
+                    <H1 STYLE="MARGIN-BOTTOM:0">Wave World Wide Web Server (W4S)</H1>
+                </A>
+            </DIV>
+
+            <DIV id="HeaderOptions" STYLE="WIDTH:100%; BACKGROUND-COLOR:RGB(0, 0,0);COLOR:RGB(255, 255, 255);TEXT-ALIGN:CENTER;FLOAT:LEFT">
+                <P></P>
+            </DIV>
+
+            <DIV CLASS="FIXEDMOSTBOTTOM" id="HeaderOptions" STYLE="WIDTH:100%; BACKGROUND-COLOR:RGB(0, 0,0);COLOR:RGB(255, 255, 255);TEXT-ALIGN:CENTER;FLOAT:LEFT">
+                <A HREF="/content/index.html">Home</A>
+                 |
+                <A HREF="/content/about.html">About</A>
+                 |
+                <A HREF="/content/contactus.html">Contact Us</A>
+            </DIV>
+
+            </BR>
+
+            <DIV CLASS="MENUPANE" ID="MenuPane" STYLE="POSITION:RELATIVE; WIDTH:10%;HEIGHT:91%;BACKGROUND-COLOR:RGB(180,200,255);COLOR:RGB(150,100,255);TEXT-ALIGN:LEFT;FLOAT:LEFT;">
+                <DIV CLASS="FIXEDABSOLUTETOPRIGHT" ID="ExpandMenuPaneDiv" STYLE="TRANSFORM:rotate(180deg); TRANSFORM-ORIGIN:CENTER;">
+                    <BUTTON CLASS="FIXEDABSOLUTETOPRIGHT" ID="ExpandMenuPaneButton"   TYPE="BUTTON"><B>&#10144;</B></BUTTON>
+                </DIV>
+
+                <UL ID="MenuPaneOptions" STYLE="POSITION:RELATIVE; TOP:20px;">
+                    <LI><A ID="PlantUml"    STYLE="CURSOR:POINTER">Plant UML</A></BR></LI>
+                    <LI><A ID="PlantUmlPng" STYLE="CURSOR:POINTER">Plant UML (PNG)</A></BR></LI>
+                    <LI><A ID="DotGraph"    STYLE="CURSOR:POINTER">DOT Graph</A></BR></LI>
+                    <LI><A ID="DotGraphPng" STYLE="CURSOR:POINTER">DOT Graph (PNG)</A></BR></LI>
+                </UL>
+
+                <TABLE ID="CompactMenuPaneOptions" STYLE="POSITION:RELATIVE; DISPLAY:NONE; TOP:40px; LEFT:20PX;">
+                    <TR><TD><IMG ID="CompactPlantUml"    SRC="http://s.plantuml.com/logoc.png"                  WIDTH=40 HEIGHT=40 STYLE="CURSOR:POINTER;"></IMG></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD><IMG ID="CompactPlantUmlPng" SRC="http://s.plantuml.com/logoc.png"                  WIDTH=40 HEIGHT=40 STYLE="CURSOR:POINTER;"></IMG></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD><IMG ID="CompactDotGraph"    SRC="http://www.graphviz.org/gvicons/doc-graphviz.png" WIDTH=40 HEIGHT=40 STYLE="CURSOR:POINTER;"></IMG></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD></TD></TR>
+                    <TR><TD><IMG ID="CompactDotGraphPng" SRC="http://www.graphviz.org/gvicons/doc-graphviz.png" WIDTH=40 HEIGHT=40 STYLE="CURSOR:POINTER;"></IMG></TD></TR>
+                </TABLE>
+            </DIV>
+
+            <DIV CLASS="DIVSCROLL" ID="ContentPane" STYLE="WIDTH:90%; HEIGHT:92%; BACKGROUND-COLOR:RGB(255, 255, 255);COLOR:RGB(0, 0, 0);TEXT-ALIGN:LEFT;FLOAT:LEFT">
+                <H2 STYLE="COLOR:RGB(255, 0, 0);TEXT-ALIGN:CENTER;">Wave Object Model</H2>
+                <DIV CLASS="FIXED">
+
+                    <BUTTON CLASS="ZOOM" ID="ExpandButton"   TYPE="BUTTON"><B>+</B></BUTTON>
+
+                    </BR>
+
+                    <BUTTON CLASS="ZOOM" ID="FitWidthButton" TYPE="BUTTON"><B>.</B></BUTTON>
+
+                    </BR>
+
+                    <BUTTON CLASS="ZOOM" ID="ContractButton" TYPE="BUTTON"><B>-</B></BUTTON>
+
+                </DIV>
+
+                <IMG CLASS="CONTENTIMAGE" ID="ContentImage"></IMG>
+
+                <IFRAME ID="ContentIFrame" STYLE="WIDTH:100%; HEIGHT:100%; FRAMEBORDER:0;BORDER:none"></IFRAME>
+            </DIV>
+        </DIV>
+
+        <SCRIPT SRC="scripts/orm.js"></SCRIPT>
+    </BODY>
 </HTML>
 
