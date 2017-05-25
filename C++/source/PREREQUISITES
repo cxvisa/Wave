@@ -1,1 +1,5 @@
 dnf -y install xerces-c-devel xalan-c-devel libidn-devel   binutils-devel zlib-devel pam-devel postgresql-server postgresql-devel libuuid-devel openssl-devel libcurl-devel file-devel plantuml graphviz
+
+# Install gRPC
+
+sudo CxWave/Wave/C++/scripts/installgrpc
