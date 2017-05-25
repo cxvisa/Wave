@@ -56,6 +56,8 @@
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager2.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager3.h"
 
+#include "gRPC/GrpcGatewayLocalObjectManager.h"
+
 #include "Framework/Utils/FileUtils.h"
 
 #include <time.h>
@@ -78,20 +80,22 @@ vector<bool>                                   Wave::m_nativeWaveServiceInstanti
 vector<NativeMultipleWaveServiceInstantiator>  Wave::m_nativeMultipleWaveServiceInstantiators;
 vector<NativeWaveServiceInstantiator>          Wave::m_nativeApplicationSpecificWaveServiceInstantiators;
 vector<ResourceId>                             Wave::m_nativeWaveServiceInstantiationMode;
-bool                                           Wave::m_enablePersistenceSupport;
-bool                                           Wave::m_enableClusteringSupport;
-bool                                           Wave::m_enableBuiltInSelfTestSupport;
-bool                                           Wave::m_enableShellSupport;
-bool                                           Wave::m_enableManagementInterfaceSupport;
-bool                                           Wave::m_enableLicensingSupport;
-bool                                           Wave::m_enableSoftwareManagementSupport;
-bool                                           Wave::m_enableTimerSupport;
-bool                                           Wave::m_enableHaPeerSupport;
-bool                                           Wave::m_enableDistributedLogSupport;
-bool                                           Wave::m_enableTraceSupport;
-bool                                           Wave::m_enableFileServiceSupport;
-bool                                           Wave::m_enableSystemManagementSupport;
-bool                                           Wave::m_enableLightHouseSupport;
+
+bool                                           Wave::m_enablePersistenceSupport                           = true;
+bool                                           Wave::m_enableClusteringSupport                            = true;
+bool                                           Wave::m_enableBuiltInSelfTestSupport                       = true;
+bool                                           Wave::m_enableShellSupport                                 = true;
+bool                                           Wave::m_enableManagementInterfaceSupport                   = true;
+bool                                           Wave::m_enableLicensingSupport                             = true;
+bool                                           Wave::m_enableSoftwareManagementSupport                    = true;
+bool                                           Wave::m_enableTimerSupport                                 = true;
+bool                                           Wave::m_enableHaPeerSupport                                = true;
+bool                                           Wave::m_enableDistributedLogSupport                        = true;
+bool                                           Wave::m_enableTraceSupport                                 = true;
+bool                                           Wave::m_enableFileServiceSupport                           = true;
+bool                                           Wave::m_enableSystemManagementSupport                      = true;
+bool                                           Wave::m_enableLightHouseSupport                            = true;
+bool                                           Wave::m_enableGrpcSupport                                  = true;
 
 PersistencePostBootCheck                       Wave::m_persistencePostBootCheck;
 WaveMutex                                      Wave::m_clusterEnabledCheckMutex;
@@ -121,6 +125,7 @@ void Wave::enableAllFeatures ()
     enableHaPeer              ();
     enableSystemManagement    ();
     enableLightHouse          ();
+    enableGrpc                ();
 }
 
 void Wave::enablePersistence ()
@@ -261,6 +266,16 @@ void Wave::enableLightHouse ()
 void Wave::disableLightHouse ()
 {
     m_enableLightHouseSupport = false;
+}
+
+void Wave::enableGrpc ()
+{
+    m_enableGrpcSupport = true;
+}
+
+void Wave::disableGrpc ()
+{
+    m_enableGrpcSupport = false;
 }
 
 void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
@@ -470,6 +485,11 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LocalClusterConfigObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ClusterInterfaceObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HeartBeatObjectManager::getInstance));
+    }
+
+    if (true == m_enableGrpcSupport)
+    {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (GrpcGatewayLocalObjectManager::getInstance));
     }
 
     if (true == m_enableManagementInterfaceSupport)
