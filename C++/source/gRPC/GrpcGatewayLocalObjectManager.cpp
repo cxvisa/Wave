@@ -7,6 +7,13 @@
 #include "gRPC/GrpcGatewayLocalObjectManager.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Boot/BootTypes.h"
+#include "Framework/Utils/StringUtils.h"
+#include "Framework/Utils/FrameworkToolKit.h"
+
+#include <grpc++/grpc++.h>
+#include <grpc/support/log.h>
+
+using namespace grpc;
 
 namespace WaveNs
 {
@@ -44,6 +51,12 @@ GrpcGatewayLocalObjectManager *GrpcGatewayLocalObjectManager::getInstance ()
 
 void GrpcGatewayLocalObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
+    const string grpcServerAddress = string ("0.0.0.0:") + FrameworkToolKit::getGrpcServerPort ();
+
+    m_grpcServerBuilder.AddListeningPort (grpcServerAddress, InsecureServerCredentials ());
+
+    m_grpcServerCompletionQueue = m_grpcServerBuilder.AddCompletionQueue ();
+
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
 }
@@ -70,7 +83,9 @@ void GrpcGatewayLocalObjectManager::bootCompleteForThisLocationEventHandler (con
 
     reply (reinterpret_cast<const WaveEvent *&> (pBootCompleteForThisLocationEvent));
 
-    trace (TRACE_LEVEL_INFO, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Now accepting connections from Wave Clients.");
+    trace (TRACE_LEVEL_INFO, "GrpcGatewayLocalObjectManager::bootCompleteForThisLocationEventHandler : Now accepting connections from gRPC Clients");
+
+    m_grpcServer = m_grpcServerBuilder.BuildAndStart ();
 
 }
 

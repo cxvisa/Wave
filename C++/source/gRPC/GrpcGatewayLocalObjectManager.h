@@ -7,9 +7,18 @@
 #ifndef GRPCGATEWAYLOCALOBJECTMANAGER_H
 #define GRPCGATEWAYLOCALOBJECTMANAGER_H
 
+#include <grpc++/impl/codegen/completion_queue.h>
+#include <grpc++/server.h>
+#include <grpc++/server_builder.h>
+#include <memory>
+
 #include "Framework/Boot/BootCompleteForThisLocationEvent.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
+
+using grpc::Server;
+using grpc::ServerBuilder;
+using grpc::ServerCompletionQueue;
 
 namespace WaveNs
 {
@@ -36,6 +45,10 @@ class GrpcGatewayLocalObjectManager : public WaveLocalObjectManagerForUserSpecif
         // Now the data members
 
     private :
+        ServerBuilder                     m_grpcServerBuilder;
+        unique_ptr<ServerCompletionQueue> m_grpcServerCompletionQueue;
+        unique_ptr<Server>                m_grpcServer;
+
     protected :
     public :
 };

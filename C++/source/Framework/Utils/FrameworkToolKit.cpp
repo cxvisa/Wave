@@ -87,6 +87,8 @@ static SI32                        s_haInterfaceReceiverPort                    
 
 static SI32                        s_haPeerInterfaceReceiverPort                         = 0;
 
+static SI32                        s_grpcServerPort                                      = 4501;
+
 static bool                        s_handleDBCorruption                                  = true;
 
 static string                      s_dbBackupFileOnFwdl                                  ("");
@@ -2077,6 +2079,15 @@ void FrameworkToolKit::setHaPeerInterfaceReceiverPort (const WaveNs::SI32& haPee
     s_haPeerInterfaceReceiverPort = haPeerInterfaceReceiverPort;
 }
 
+SI32 FrameworkToolKit::getGrpcServerPort ()
+{
+    return (s_grpcServerPort);
+}
+
+void FrameworkToolKit::setGrpcServerPort (const SI32 &grpcServerPort)
+{
+    s_grpcServerPort = grpcServerPort;
+}
 
 WaveHaNodeRole FrameworkToolKit::getThisWaveHaNodeRole ()
 {

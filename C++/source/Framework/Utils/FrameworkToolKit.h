@@ -194,7 +194,10 @@ class FrameworkToolKit
         static      void                         setHaInterfaceReceiverPort                 (const SI32 &haInterfaceReceiverPort);
 
 		static 		SI32 						 getHaPeerInterfaceReceiverPort 		    (); // ha receiver port of remote receiver interface
-		static		void 						 setHaPeerInterfaceReceiverPort             (const WaveNs::SI32& haPeerInterfaceReceiverPort);
+		static		void 						 setHaPeerInterfaceReceiverPort             (const SI32 &haPeerInterfaceReceiverPort);
+
+		static      SI32                         getGrpcServerPort                          ();
+		static      void                         setGrpcServerPort                          (const SI32 &grpcServerPort);
 
         static     WaveHaNodeRole                getThisWaveHaNodeRole                      ();
 
