@@ -31,7 +31,7 @@ HOSTCXX := g++
 
 TOOLCHAIN_PREFIX :=
 ARCH	         := $(ARCH_HOST)
-LDFLAGS	         := -Wl,-R.
+LDFLAGS	         := -Wl,-R. -L /usr/local/lib -Wl,-R/usr/local/lib
 
 OS_ARCH_XT := $(OS).$(ARCH)
 CXX	:= $(TOOLCHAIN_PREFIX)g++$(GCCVERSION)
@@ -198,11 +198,11 @@ TPS_CONFIGDC	:= $(TPS_CONFIGD_DIR)/bin/tps_configdc
 TPS_CONFIGD_FLAGS	:= --addloadpath $(TPS_CONFIGD_DIR)/etc/tps_configd --addloadpath $(BUILD_DIR_DYNAMIC_SRC) --addloadpath $(BUILD_DIR_LIB)
 TPS_CONFIGD_FLAGS	+= --addloadpath $(FABOS_ROOT)/src/yang --addloadpath $(FABOS_ROOT)/src/tps_configd/cli
 
-LDFLAGS	+= -L$(XERCESC_LIB_DIR) -Wl,-R$(XERCESC_LIB_DIR)
+LDFLAGS	+= -L $(XERCESC_LIB_DIR) -Wl,-R$(XERCESC_LIB_DIR)
 LDFLAGS += -L $(WAVE_BUILD_DIR_LIB) -Wl,-R$(WAVE_BUILD_DIR_LIB)
 
 ifeq "x86_64" "$(ARCH)"
-	LDFLAGS		+= -L$(LIBERTY_LIB_DIR)
+	LDFLAGS		+= -L $(LIBERTY_LIB_DIR)
 endif
 
 
@@ -215,7 +215,7 @@ XALANC_FILE_WAVE       := $(WAVE_DEPENDENCIES_OS_ARCH_HOST)/$(XALANC)/$(XALANC)-
 XALANC_INCLUDE_DIR     := $(XALANC_ARCH_DIR)/$(XALANC_VERSION)/include
 XALANC_LIB_DIR         := $(XALANC_ARCH_DIR)/$(XALANC_VERSION)/lib
 
-export LDFLAGS          += -L$(XERCESC_LIB_DIR) -Wl,-R$(XERCESC_LIB_DIR) -L$(XALANC_LIB_DIR) -Wl,-R$(XALANC_LIB_DIR) -L $(OPENVSWITCH_LIB_DIR) -Wl,-R$(OPENVSWITCH_LIB_DIR) -L $(WAVEOSS_LIB_DIR) -Wl,-R$(WAVEOSS_LIB_DIR)
+export LDFLAGS          += -L $(XERCESC_LIB_DIR) -Wl,-R$(XERCESC_LIB_DIR) -L $(XALANC_LIB_DIR) -Wl,-R$(XALANC_LIB_DIR) -L $(OPENVSWITCH_LIB_DIR) -Wl,-R$(OPENVSWITCH_LIB_DIR) -L $(WAVEOSS_LIB_DIR) -Wl,-R$(WAVEOSS_LIB_DIR)
 
 ifeq "$(USE_STATIC_LIBS)" "1"
     LDFLAGS += -static
@@ -238,6 +238,7 @@ else
 LIBFILES	+= -l$(PROJECT)
 endif
 
+LIBFILES += -lgrpc++ -lgrpc -lprotobuf
 LIBFILES += -lxerces-c -lxalan-c -lxalanMsg -lcurl -lssl -lidn -lpq -lcrypto \
 	-lpam -luuid -lpthread -lmagic
 LIBFILES	+= -lrt -liberty 
@@ -306,4 +307,6 @@ CXXFLAGS += -I $(XERCESC_INCLUDE_DIR)
 CXXFLAGS += -I.
 CXXFLAGS += -iquote $(POSTGRESQL_INCLUDE_DIR) -I /usr/include/postgresql -I $(XALANC_INCLUDE_DIR)
 CXXFLAGS += -iquote $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)
+
+CXXFLAGS := -I /usr/local/include $(CXXFLAGS)
 
