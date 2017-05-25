@@ -348,9 +348,9 @@ void ManagedObjectSchemaInfoRepository::dumpToDOT(const string &graphName) const
     graphFile.close ();
 }
 
-auto_ptr<ManagedObjectSchemaDifferences> ManagedObjectSchemaInfoRepository::getManagedObjectDifferences (const ManagedObjectSchemaInfoRepository &rhs)
+unique_ptr<ManagedObjectSchemaDifferences> ManagedObjectSchemaInfoRepository::getManagedObjectDifferences (const ManagedObjectSchemaInfoRepository &rhs)
 {
-    auto_ptr<ManagedObjectSchemaDifferences> pDifference (new ManagedObjectSchemaDifferences ());
+    unique_ptr<ManagedObjectSchemaDifferences> pDifference (new ManagedObjectSchemaDifferences ());
 
     map<string, ManagedObjectSchemaInfo *> temp;
     map<string, ManagedObjectSchemaInfo *>::const_iterator temp_iter;
@@ -405,7 +405,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
     cleanupSchemaDifferenceInfo();
     m_userDefinedKeyCombinationChanged = false;
 
-    auto_ptr<ManagedObjectSchemaDifferences> differences = getManagedObjectDifferences(rhs);
+    unique_ptr<ManagedObjectSchemaDifferences> differences = move (getManagedObjectDifferences(rhs));
     if (differences->hasDifferences () == false)
     {
         trace (TRACE_LEVEL_INFO, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : No schema changes detected");
@@ -468,9 +468,9 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
         ResourceId userDefinedKeyFieldDiffStatus    = FRAMEWORK_SUCCESS;
         ResourceId inheritanceDiffStatus            = FRAMEWORK_SUCCESS;
 
-        auto_ptr<FieldSchemaDifferences>            fieldDiff               = pLhsObject->getFieldObjectDifferences (*pRhsObject, fieldDiffStatus);
-        auto_ptr<RelationFieldSchemaDifferences>    relationFieldDiff       = pLhsObject->getRelationFieldObjectDifferences (*pRhsObject, relationFieldDiffStatus);
-        auto_ptr<FieldSchemaDifferences>            userDefinedKeyFieldDiff = pLhsObject->getUserDefinedKeyDifferences (*pRhsObject, userDefinedKeyFieldDiffStatus);
+        unique_ptr<FieldSchemaDifferences>            fieldDiff               = move (pLhsObject->getFieldObjectDifferences (*pRhsObject, fieldDiffStatus));
+        unique_ptr<RelationFieldSchemaDifferences>    relationFieldDiff       = move (pLhsObject->getRelationFieldObjectDifferences (*pRhsObject, relationFieldDiffStatus));
+        unique_ptr<FieldSchemaDifferences>            userDefinedKeyFieldDiff = move (pLhsObject->getUserDefinedKeyDifferences (*pRhsObject, userDefinedKeyFieldDiffStatus));
         inheritanceDiffStatus = pLhsObject->getInheritanceDiffStatus (*pRhsObject);
 
         trace (TRACE_LEVEL_INFO, "FieldDiff ... : '" + FrameworkToolKit::localize(fieldDiffStatus) + "'");

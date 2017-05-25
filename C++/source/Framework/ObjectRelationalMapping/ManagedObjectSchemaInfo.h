@@ -59,10 +59,10 @@ class ManagedObjectSchemaInfo : public RelationReferenceCount
 
 
 
-        auto_ptr<FieldSchemaDifferences>    getFieldObjectDifferences                           (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
-        auto_ptr<RelationFieldSchemaDifferences>    getRelationFieldObjectDifferences           (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
+        unique_ptr<FieldSchemaDifferences>    getFieldObjectDifferences                           (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
+        unique_ptr<RelationFieldSchemaDifferences>    getRelationFieldObjectDifferences           (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
         ResourceId                          parseAndCompareRelationships                        (string lhsRelationTypeFull, string rhsRelationTypeFull) const;
-        auto_ptr<FieldSchemaDifferences>    getUserDefinedKeyDifferences                        (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
+        unique_ptr<FieldSchemaDifferences>    getUserDefinedKeyDifferences                        (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const;
         ResourceId                          getInheritanceDiffStatus                            (const ManagedObjectSchemaInfo &rhs) const;
         string                              getSQLForTableUpdate                                (const string &schema, const vector<pair<string, string> > &addedFields, const vector<pair<string, string> > &removedFields, const vector<pair<string, string> > &changedFields) const;
         ResourceId                          getSqlForRemovedRelationship                        (string & schemaUpdateSqlForCurrentSchema, string & schemaUpdateSqlForStartSchema, const string & relationName, const string & relatedToTable, OrmRelationUmlType relationUmlType, OrmRelationType relationType, ManagedObjectSchemaInfoRepository & dbSchemaInfoRepository);

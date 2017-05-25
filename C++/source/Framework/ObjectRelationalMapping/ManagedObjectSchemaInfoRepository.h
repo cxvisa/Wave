@@ -53,7 +53,7 @@ class ManagedObjectSchemaInfoRepository
         bool                                        operator==                          (const ManagedObjectSchemaInfoRepository &rhs) const;
         bool                                        operator!=                          (const ManagedObjectSchemaInfoRepository &rhs) const;
 
-        auto_ptr<ManagedObjectSchemaDifferences>    getManagedObjectDifferences         (const ManagedObjectSchemaInfoRepository &rhs);
+        unique_ptr<ManagedObjectSchemaDifferences>    getManagedObjectDifferences         (const ManagedObjectSchemaInfoRepository &rhs);
 	    ResourceId                                  handleDatabaseSchemaDifferences     (ManagedObjectSchemaInfoRepository &rhs);
 
         void                                        addMOToSchemaDifference             (ManagedObjectSchemaInfo *pManagedObjectSchemaInfo, bool isNewManagedObject);

@@ -220,9 +220,9 @@ ResourceId ManagedObjectSchemaInfo::parseAndCompareRelationships (string lhsRela
 }
 
         
-auto_ptr<RelationFieldSchemaDifferences> ManagedObjectSchemaInfo::getRelationFieldObjectDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
+unique_ptr<RelationFieldSchemaDifferences> ManagedObjectSchemaInfo::getRelationFieldObjectDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
 {
-    auto_ptr<RelationFieldSchemaDifferences> pDifference;
+    unique_ptr<RelationFieldSchemaDifferences> pDifference;
 
     map<string, string> temp;
     map<string, string>::const_iterator temp_iter;
@@ -345,9 +345,9 @@ ResourceId ManagedObjectSchemaInfo::getInheritanceDiffStatus (const ManagedObjec
     }
 }
 
-auto_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getUserDefinedKeyDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
+unique_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getUserDefinedKeyDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
 {
-    auto_ptr<FieldSchemaDifferences> pDifference;
+    unique_ptr<FieldSchemaDifferences> pDifference;
 
     map<string, string> temp;
     map<string, string>::const_iterator temp_iter;
@@ -432,9 +432,9 @@ auto_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getUserDefinedKeyDiffe
     return (pDifference);
 }
 
-auto_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getFieldObjectDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
+unique_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getFieldObjectDifferences (const ManagedObjectSchemaInfo &rhs, ResourceId & status) const
 {
-    auto_ptr<FieldSchemaDifferences> pDifference;
+    unique_ptr<FieldSchemaDifferences> pDifference;
 
     map<string, string> temp;
     map<string, string>::const_iterator temp_iter;

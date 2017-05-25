@@ -225,7 +225,7 @@ ifeq "$(USE_FULL_STATIC_LIBS)" "1"
     LDFLAGS += -static -static-libgcc
 endif
 
-CXXFLAGS	+= -D _REENTRANT -D _THREAD_SAFE -D _POSIX_PTHREAD_SEMANTICS -Wall -Wshadow -Wno-long-long -ansi -pedantic -Werror -fPIC
+CXXFLAGS	+= -D _REENTRANT -D _THREAD_SAFE -D _POSIX_PTHREAD_SEMANTICS -Wall -Wshadow -Wno-long-long -ansi -std=c++14 -pedantic -Werror -fPIC
 CXXFLAGS	+= $(if $(filter 1,$(DEBUG)),-g3)
 CXXFLAGS	+= $(if $(filter 1,$(OPTIMIZED)),$(DEBUG_FLAG_G) -O3)
 CXXFLAGS	+= $(if $(filter $(OS),SunOS),-D SOLARIS -D BSD_COMP)
