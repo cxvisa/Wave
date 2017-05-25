@@ -21,7 +21,7 @@
 							<builder id="cdt.managedbuild.target.gnu.builder.base.354003249" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.338352313" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.335747439" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
-								<option id="gnu.cpp.compiler.option.include.paths.2021609117" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.2021609117" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/source"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/DynamicSource"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/x86_64/optimized/DynamicSource"/>
@@ -29,7 +29,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1053590372" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1692149369" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
-								<option id="gnu.c.compiler.option.include.paths.684923189" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.684923189" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/source"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/DynamicSource"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/x86_64/optimized/DynamicSource"/>
@@ -44,7 +44,7 @@
 								</inputType>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.838511763" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-								<option id="gnu.both.asm.option.include.paths.72958709" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+								<option id="gnu.both.asm.option.include.paths.72958709" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/source"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/DynamicSource"/>
 									<listOptionValue builtIn="false" value="/home/sagar/CxWave/Wave/C++/build/Wave/Linux/x86_64/optimized/DynamicSource"/>
@@ -101,4 +101,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
