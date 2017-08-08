@@ -9,6 +9,7 @@
 #include "Framework/Core/Test/FrameworkTestabilityMessages.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/AssertUtils.h"
+#include "Framework/Utils/StringUtils.h"
 #include "Framework/Timer/TimerWorker.h"
 
 namespace WaveNs

@@ -746,7 +746,6 @@ string::size_type StringUtils::getNumberOfOccurances (const string &inputString,
 
 string::size_type StringUtils::findNthOccurance (const string &inputString, const char &inputCharacter, const string::size_type &n)
 {
-    string::const_iterator beginElement = inputString.begin ();
     string::const_iterator element      = inputString.begin ();
     string::const_iterator endElement   = inputString.end   ();
     string::size_type      position     = 0;

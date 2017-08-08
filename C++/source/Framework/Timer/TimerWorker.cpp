@@ -13,6 +13,16 @@
 #include <signal.h>
 #include <time.h>
 
+extern "C"
+{
+
+void waveProcessAlarmSignal ()
+{
+    WaveNs::TimerWorker::processTimeOut ();
+}
+
+}
+
 namespace WaveNs
 {
 
@@ -762,7 +772,7 @@ void TimerWorker::removeAllTimers ()
 /*
  * processTimeOut()
  *      This function is called when the system timer is expired.
- *      When this happen we notify who register for this timer by
+ *      When this happen we notify those who registered for this timer by
  *      sending expiration message. We also start the next timer
  *      in the timer list.
  *

@@ -20,11 +20,11 @@ namespace WaveNs
 
 extern "C" int waveMain (int argc, char *argv[])
 {
-    bool                   isADaemon                                    = true;
+    bool                   isADaemon                                    = false;
     FrameworkSequenceType  type                                         = FRAMEWORK_SEQUENCE_TYPE0;
     bool                   isSysLogRequired                             = true;
     SI32                   port                                         = FrameworkToolKit::getWaveDefaultTcpPort ();
-    bool                   isDatabaseEnabled                            = false;
+    bool                   isDatabaseEnabled                            = true;
     SI32                   databasePort                                 = FrameworkToolKit::getWaveDefaultDatabaseTcpPort ();
     string                 databaseLogFileName                          = DatabaseObjectManager::getDatabaseLogFileName ();
     bool                   isDatabaseLogEnabled                         = true;
@@ -349,3 +349,16 @@ extern "C" int waveMain (int argc, char *argv[])
 
     return EXIT_SUCCESS;
 }
+
+extern "C" int waveMainWithDefaults (char *programName)
+{
+    int argc = 1;
+    char **argv = (char **) malloc (sizeof (char *));
+    
+    argv[0] = (char *) malloc (strlen (programName) + 1);
+
+    strncpy (argv[0], programName, strlen (argv[0]) + 1);
+
+    return (waveMain (argc, argv));
+}
+

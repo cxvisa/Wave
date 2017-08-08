@@ -154,7 +154,7 @@ bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts,
     socketElement = sockets.begin ();
 
     set<UI32>::const_iterator inputPortElement    = inputPorts.begin ();
-    set<UI32>::const_iterator inputPortEndElement = inputPorts.end   ();
+    //set<UI32>::const_iterator inputPortEndElement = inputPorts.end   ();
 
     struct timeval timeOut;
            fd_set  socketFdSet;

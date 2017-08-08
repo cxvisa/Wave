@@ -15,6 +15,8 @@
 #include <vector>
 #include <map>
 
+extern "C" void waveProcessAlarmSignal ();
+
 namespace WaveNs
 {
 

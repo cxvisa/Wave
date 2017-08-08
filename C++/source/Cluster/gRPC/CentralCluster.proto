@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package CentralCluster;
+
+service CentralCluster
+{
+    rpc GetClusterInfo (GetClusterInfoMessage) returns (GetClusterInfoMessage) {}
+}
+
+message GetClusterInfoMessage
+{
+    bool clusterCreated = 1;
+    string primaryNodeIpAddress = 2;
+    fixed32 primaryNodePort = 3;
+    fixed32 primaryNodeLocationId = 4;
+    string primaryNodeGenericStatus = 5;
+    string primaryNodeSpecificStatus = 6;
+    fixed32 nSecondaryNodes = 7;
+    repeated string secondaryNodeIpAddresses = 8;
+    repeated fixed32 secondaryNodePorts = 9;
+    repeated fixed32 secondaryNodeLocationIds = 10;
+    repeated string secondaryNodeGenericStatus = 11;
+    repeated string secondaryNodeSpecificStatus = 12;
+}
+

@@ -52,7 +52,7 @@ void ApplicationServiceRepository::addNewApplicationLocalService (const UI32 &ne
     map<UI32, string>::iterator element    = m_applicationLocalServiceNamesMap.find (newApplicationLocalServiceId);
     map<UI32, string>::iterator endElement = m_applicationLocalServiceNamesMap.end ();
 
-    if (element != element)
+    if (element != endElement)
     {
         trace (TRACE_LEVEL_FATAL, string ("ApplicationServiceRepository::addNewApplicationLocalService : Application Service ID (") + newApplicationLocalServiceId + ") already exists in the map");
 
