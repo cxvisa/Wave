@@ -1,0 +1,9 @@
+build/
+*.Linux.x86_64
+source/Resources/resources
+application/WaveDatabase
+projects/eclipse/.*
+execution/
+*.trc
+*.trc.*
+

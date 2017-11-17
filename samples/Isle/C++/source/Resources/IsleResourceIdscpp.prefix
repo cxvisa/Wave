@@ -1,0 +1,10 @@
+#include "WaveResourceIds.h"
+#include "IsleResourceIds.h"
+
+using namespace std;
+using namespace WaveNs;
+
+namespace IsleNs
+{
+
+}

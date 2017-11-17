@@ -18,7 +18,10 @@
 // @@protoc_insertion_point(includes)
 
 namespace CentralCluster {
-class GetClusterInfoMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<GetClusterInfoMessage> {
+class GetClusterInfoMessageDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<GetClusterInfoMessage>
+     _instance;
 } _GetClusterInfoMessage_default_instance_;
 
 namespace protobuf_CentralCluster_2eproto {
@@ -30,11 +33,26 @@ namespace {
 
 }  // namespace
 
-const ::google::protobuf::uint32 TableStruct::offsets[] = {
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTableField
+    const TableStruct::entries[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  {0, 0, 0, ::google::protobuf::internal::kInvalidMask, 0, 0},
+};
+
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
+    const TableStruct::aux[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  ::google::protobuf::internal::AuxillaryParseTableField(),
+};
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
+    TableStruct::schema[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+};
+
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, clustercreated_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, primarynodeipaddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, primarynodeport_),
@@ -48,8 +66,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, secondarynodegenericstatus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetClusterInfoMessage, secondarynodespecificstatus_),
 };
-
-static const ::google::protobuf::internal::MigrationSchema schemas[] = {
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(GetClusterInfoMessage)},
 };
 
@@ -79,26 +96,22 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }
 
 }  // namespace
-
-void TableStruct::Shutdown() {
-  _GetClusterInfoMessage_default_instance_.Shutdown();
-  delete file_level_metadata[0].reflection;
-}
-
 void TableStruct::InitDefaultsImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::internal::InitProtobufDefaults();
-  _GetClusterInfoMessage_default_instance_.DefaultConstruct();
-}
+  _GetClusterInfoMessage_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_GetClusterInfoMessage_default_instance_);}
 
 void InitDefaults() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &TableStruct::InitDefaultsImpl);
 }
+namespace {
 void AddDescriptorsImpl() {
   InitDefaults();
-  static const char descriptor[] = {
+  static const char descriptor[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\024CentralCluster.proto\022\016CentralCluster\"\214"
       "\003\n\025GetClusterInfoMessage\022\026\n\016clusterCreat"
       "ed\030\001 \001(\010\022\034\n\024primaryNodeIpAddress\030\002 \001(\t\022\027"
@@ -119,14 +132,14 @@ void AddDescriptorsImpl() {
       descriptor, 561);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CentralCluster.proto", &protobuf_RegisterTypes);
-  ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
 }
+} // anonymous namespace
 
 void AddDescriptors() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
 }
-// Force AddDescriptors() to be called at static initialization time.
+// Force AddDescriptors() to be called at dynamic initialization time.
 struct StaticDescriptorInitializer {
   StaticDescriptorInitializer() {
     AddDescriptors();
@@ -184,8 +197,8 @@ GetClusterInfoMessage::GetClusterInfoMessage(const GetClusterInfoMessage& from)
     primarynodespecificstatus_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.primarynodespecificstatus_);
   }
   ::memcpy(&clustercreated_, &from.clustercreated_,
-    reinterpret_cast<char*>(&nsecondarynodes_) -
-    reinterpret_cast<char*>(&clustercreated_) + sizeof(nsecondarynodes_));
+    static_cast<size_t>(reinterpret_cast<char*>(&nsecondarynodes_) -
+    reinterpret_cast<char*>(&clustercreated_)) + sizeof(nsecondarynodes_));
   // @@protoc_insertion_point(copy_constructor:CentralCluster.GetClusterInfoMessage)
 }
 
@@ -193,8 +206,9 @@ void GetClusterInfoMessage::SharedCtor() {
   primarynodeipaddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   primarynodegenericstatus_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   primarynodespecificstatus_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&clustercreated_, 0, reinterpret_cast<char*>(&nsecondarynodes_) -
-    reinterpret_cast<char*>(&clustercreated_) + sizeof(nsecondarynodes_));
+  ::memset(&clustercreated_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&nsecondarynodes_) -
+      reinterpret_cast<char*>(&clustercreated_)) + sizeof(nsecondarynodes_));
   _cached_size_ = 0;
 }
 
@@ -216,7 +230,7 @@ void GetClusterInfoMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetClusterInfoMessage::descriptor() {
   protobuf_CentralCluster_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_CentralCluster_2eproto::file_level_metadata[0].descriptor;
+  return protobuf_CentralCluster_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const GetClusterInfoMessage& GetClusterInfoMessage::default_instance() {
@@ -234,6 +248,10 @@ GetClusterInfoMessage* GetClusterInfoMessage::New(::google::protobuf::Arena* are
 
 void GetClusterInfoMessage::Clear() {
 // @@protoc_insertion_point(message_clear_start:CentralCluster.GetClusterInfoMessage)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   secondarynodeipaddresses_.Clear();
   secondarynodeports_.Clear();
   secondarynodelocationids_.Clear();
@@ -242,8 +260,10 @@ void GetClusterInfoMessage::Clear() {
   primarynodeipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   primarynodegenericstatus_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   primarynodespecificstatus_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&clustercreated_, 0, reinterpret_cast<char*>(&nsecondarynodes_) -
-    reinterpret_cast<char*>(&clustercreated_) + sizeof(nsecondarynodes_));
+  ::memset(&clustercreated_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&nsecondarynodes_) -
+      reinterpret_cast<char*>(&clustercreated_)) + sizeof(nsecondarynodes_));
+  _internal_metadata_.Clear();
 }
 
 bool GetClusterInfoMessage::MergePartialFromCodedStream(
@@ -258,7 +278,8 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool clusterCreated = 1;
       case 1: {
-        if (tag == 8u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -271,11 +292,12 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // string primaryNodeIpAddress = 2;
       case 2: {
-        if (tag == 18u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_primarynodeipaddress()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->primarynodeipaddress().data(), this->primarynodeipaddress().length(),
+            this->primarynodeipaddress().data(), static_cast<int>(this->primarynodeipaddress().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.primaryNodeIpAddress"));
         } else {
@@ -286,7 +308,8 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // fixed32 primaryNodePort = 3;
       case 3: {
-        if (tag == 29u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u /* 29 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
@@ -299,7 +322,8 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // fixed32 primaryNodeLocationId = 4;
       case 4: {
-        if (tag == 37u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(37u /* 37 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
@@ -312,11 +336,12 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // string primaryNodeGenericStatus = 5;
       case 5: {
-        if (tag == 42u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_primarynodegenericstatus()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->primarynodegenericstatus().data(), this->primarynodegenericstatus().length(),
+            this->primarynodegenericstatus().data(), static_cast<int>(this->primarynodegenericstatus().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.primaryNodeGenericStatus"));
         } else {
@@ -327,11 +352,12 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // string primaryNodeSpecificStatus = 6;
       case 6: {
-        if (tag == 50u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_primarynodespecificstatus()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->primarynodespecificstatus().data(), this->primarynodespecificstatus().length(),
+            this->primarynodespecificstatus().data(), static_cast<int>(this->primarynodespecificstatus().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.primaryNodeSpecificStatus"));
         } else {
@@ -342,7 +368,8 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // fixed32 nSecondaryNodes = 7;
       case 7: {
-        if (tag == 61u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(61u /* 61 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
@@ -355,12 +382,13 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // repeated string secondaryNodeIpAddresses = 8;
       case 8: {
-        if (tag == 66u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_secondarynodeipaddresses()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->secondarynodeipaddresses(this->secondarynodeipaddresses_size() - 1).data(),
-            this->secondarynodeipaddresses(this->secondarynodeipaddresses_size() - 1).length(),
+            static_cast<int>(this->secondarynodeipaddresses(this->secondarynodeipaddresses_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses"));
         } else {
@@ -371,11 +399,14 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // repeated fixed32 secondaryNodePorts = 9;
       case 9: {
-        if (tag == 74u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
                  input, this->mutable_secondarynodeports())));
-        } else if (tag == 77u) {
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(77u /* 77 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
                  1, 74u, input, this->mutable_secondarynodeports())));
@@ -387,11 +418,14 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // repeated fixed32 secondaryNodeLocationIds = 10;
       case 10: {
-        if (tag == 82u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
                  input, this->mutable_secondarynodelocationids())));
-        } else if (tag == 85u) {
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(85u /* 85 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_FIXED32>(
                  1, 82u, input, this->mutable_secondarynodelocationids())));
@@ -403,12 +437,13 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // repeated string secondaryNodeGenericStatus = 11;
       case 11: {
-        if (tag == 90u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(90u /* 90 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_secondarynodegenericstatus()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->secondarynodegenericstatus(this->secondarynodegenericstatus_size() - 1).data(),
-            this->secondarynodegenericstatus(this->secondarynodegenericstatus_size() - 1).length(),
+            static_cast<int>(this->secondarynodegenericstatus(this->secondarynodegenericstatus_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus"));
         } else {
@@ -419,12 +454,13 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       // repeated string secondaryNodeSpecificStatus = 12;
       case 12: {
-        if (tag == 98u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_secondarynodespecificstatus()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->secondarynodespecificstatus(this->secondarynodespecificstatus_size() - 1).data(),
-            this->secondarynodespecificstatus(this->secondarynodespecificstatus_size() - 1).length(),
+            static_cast<int>(this->secondarynodespecificstatus(this->secondarynodespecificstatus_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus"));
         } else {
@@ -435,12 +471,11 @@ bool GetClusterInfoMessage::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -457,6 +492,9 @@ failure:
 void GetClusterInfoMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:CentralCluster.GetClusterInfoMessage)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // bool clusterCreated = 1;
   if (this->clustercreated() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->clustercreated(), output);
@@ -465,7 +503,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeIpAddress = 2;
   if (this->primarynodeipaddress().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodeipaddress().data(), this->primarynodeipaddress().length(),
+      this->primarynodeipaddress().data(), static_cast<int>(this->primarynodeipaddress().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeIpAddress");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -485,7 +523,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeGenericStatus = 5;
   if (this->primarynodegenericstatus().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodegenericstatus().data(), this->primarynodegenericstatus().length(),
+      this->primarynodegenericstatus().data(), static_cast<int>(this->primarynodegenericstatus().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeGenericStatus");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -495,7 +533,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeSpecificStatus = 6;
   if (this->primarynodespecificstatus().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodespecificstatus().data(), this->primarynodespecificstatus().length(),
+      this->primarynodespecificstatus().data(), static_cast<int>(this->primarynodespecificstatus().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeSpecificStatus");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -508,9 +546,9 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   }
 
   // repeated string secondaryNodeIpAddresses = 8;
-  for (int i = 0; i < this->secondarynodeipaddresses_size(); i++) {
+  for (int i = 0, n = this->secondarynodeipaddresses_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodeipaddresses(i).data(), this->secondarynodeipaddresses(i).length(),
+      this->secondarynodeipaddresses(i).data(), static_cast<int>(this->secondarynodeipaddresses(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses");
     ::google::protobuf::internal::WireFormatLite::WriteString(
@@ -520,7 +558,8 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // repeated fixed32 secondaryNodePorts = 9;
   if (this->secondarynodeports_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(9, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_secondarynodeports_cached_byte_size_);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _secondarynodeports_cached_byte_size_));
     ::google::protobuf::internal::WireFormatLite::WriteFixed32Array(
       this->secondarynodeports().data(), this->secondarynodeports_size(), output);
   }
@@ -528,15 +567,16 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // repeated fixed32 secondaryNodeLocationIds = 10;
   if (this->secondarynodelocationids_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(10, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_secondarynodelocationids_cached_byte_size_);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _secondarynodelocationids_cached_byte_size_));
     ::google::protobuf::internal::WireFormatLite::WriteFixed32Array(
       this->secondarynodelocationids().data(), this->secondarynodelocationids_size(), output);
   }
 
   // repeated string secondaryNodeGenericStatus = 11;
-  for (int i = 0; i < this->secondarynodegenericstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodegenericstatus_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodegenericstatus(i).data(), this->secondarynodegenericstatus(i).length(),
+      this->secondarynodegenericstatus(i).data(), static_cast<int>(this->secondarynodegenericstatus(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus");
     ::google::protobuf::internal::WireFormatLite::WriteString(
@@ -544,22 +584,29 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   }
 
   // repeated string secondaryNodeSpecificStatus = 12;
-  for (int i = 0; i < this->secondarynodespecificstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodespecificstatus_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodespecificstatus(i).data(), this->secondarynodespecificstatus(i).length(),
+      this->secondarynodespecificstatus(i).data(), static_cast<int>(this->secondarynodespecificstatus(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus");
     ::google::protobuf::internal::WireFormatLite::WriteString(
       12, this->secondarynodespecificstatus(i), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:CentralCluster.GetClusterInfoMessage)
 }
 
 ::google::protobuf::uint8* GetClusterInfoMessage::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:CentralCluster.GetClusterInfoMessage)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // bool clusterCreated = 1;
   if (this->clustercreated() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->clustercreated(), target);
@@ -568,7 +615,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeIpAddress = 2;
   if (this->primarynodeipaddress().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodeipaddress().data(), this->primarynodeipaddress().length(),
+      this->primarynodeipaddress().data(), static_cast<int>(this->primarynodeipaddress().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeIpAddress");
     target =
@@ -589,7 +636,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeGenericStatus = 5;
   if (this->primarynodegenericstatus().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodegenericstatus().data(), this->primarynodegenericstatus().length(),
+      this->primarynodegenericstatus().data(), static_cast<int>(this->primarynodegenericstatus().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeGenericStatus");
     target =
@@ -600,7 +647,7 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   // string primaryNodeSpecificStatus = 6;
   if (this->primarynodespecificstatus().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->primarynodespecificstatus().data(), this->primarynodespecificstatus().length(),
+      this->primarynodespecificstatus().data(), static_cast<int>(this->primarynodespecificstatus().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.primaryNodeSpecificStatus");
     target =
@@ -614,9 +661,9 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   }
 
   // repeated string secondaryNodeIpAddresses = 8;
-  for (int i = 0; i < this->secondarynodeipaddresses_size(); i++) {
+  for (int i = 0, n = this->secondarynodeipaddresses_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodeipaddresses(i).data(), this->secondarynodeipaddresses(i).length(),
+      this->secondarynodeipaddresses(i).data(), static_cast<int>(this->secondarynodeipaddresses(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses");
     target = ::google::protobuf::internal::WireFormatLite::
@@ -630,11 +677,10 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-      _secondarynodeports_cached_byte_size_, target);
-  }
-  for (int i = 0; i < this->secondarynodeports_size(); i++) {
+        static_cast< ::google::protobuf::uint32>(
+            _secondarynodeports_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteFixed32NoTagToArray(this->secondarynodeports(i), target);
+      WriteFixed32NoTagToArray(this->secondarynodeports_, target);
   }
 
   // repeated fixed32 secondaryNodeLocationIds = 10;
@@ -644,17 +690,16 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-      _secondarynodelocationids_cached_byte_size_, target);
-  }
-  for (int i = 0; i < this->secondarynodelocationids_size(); i++) {
+        static_cast< ::google::protobuf::uint32>(
+            _secondarynodelocationids_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteFixed32NoTagToArray(this->secondarynodelocationids(i), target);
+      WriteFixed32NoTagToArray(this->secondarynodelocationids_, target);
   }
 
   // repeated string secondaryNodeGenericStatus = 11;
-  for (int i = 0; i < this->secondarynodegenericstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodegenericstatus_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodegenericstatus(i).data(), this->secondarynodegenericstatus(i).length(),
+      this->secondarynodegenericstatus(i).data(), static_cast<int>(this->secondarynodegenericstatus(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus");
     target = ::google::protobuf::internal::WireFormatLite::
@@ -662,15 +707,19 @@ void GetClusterInfoMessage::SerializeWithCachedSizes(
   }
 
   // repeated string secondaryNodeSpecificStatus = 12;
-  for (int i = 0; i < this->secondarynodespecificstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodespecificstatus_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secondarynodespecificstatus(i).data(), this->secondarynodespecificstatus(i).length(),
+      this->secondarynodespecificstatus(i).data(), static_cast<int>(this->secondarynodespecificstatus(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus");
     target = ::google::protobuf::internal::WireFormatLite::
       WriteStringToArray(12, this->secondarynodespecificstatus(i), target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:CentralCluster.GetClusterInfoMessage)
   return target;
 }
@@ -679,21 +728,27 @@ size_t GetClusterInfoMessage::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:CentralCluster.GetClusterInfoMessage)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // repeated string secondaryNodeIpAddresses = 8;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->secondarynodeipaddresses_size());
-  for (int i = 0; i < this->secondarynodeipaddresses_size(); i++) {
+  for (int i = 0, n = this->secondarynodeipaddresses_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
       this->secondarynodeipaddresses(i));
   }
 
   // repeated fixed32 secondaryNodePorts = 9;
   {
-    unsigned int count = this->secondarynodeports_size();
+    unsigned int count = static_cast<unsigned int>(this->secondarynodeports_size());
     size_t data_size = 4UL * count;
     if (data_size > 0) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -704,11 +759,12 @@ size_t GetClusterInfoMessage::ByteSizeLong() const {
 
   // repeated fixed32 secondaryNodeLocationIds = 10;
   {
-    unsigned int count = this->secondarynodelocationids_size();
+    unsigned int count = static_cast<unsigned int>(this->secondarynodelocationids_size());
     size_t data_size = 4UL * count;
     if (data_size > 0) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -720,7 +776,7 @@ size_t GetClusterInfoMessage::ByteSizeLong() const {
   // repeated string secondaryNodeGenericStatus = 11;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->secondarynodegenericstatus_size());
-  for (int i = 0; i < this->secondarynodegenericstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodegenericstatus_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
       this->secondarynodegenericstatus(i));
   }
@@ -728,7 +784,7 @@ size_t GetClusterInfoMessage::ByteSizeLong() const {
   // repeated string secondaryNodeSpecificStatus = 12;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->secondarynodespecificstatus_size());
-  for (int i = 0; i < this->secondarynodespecificstatus_size(); i++) {
+  for (int i = 0, n = this->secondarynodespecificstatus_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
       this->secondarynodespecificstatus(i));
   }
@@ -800,6 +856,9 @@ void GetClusterInfoMessage::MergeFrom(const GetClusterInfoMessage& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:CentralCluster.GetClusterInfoMessage)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   secondarynodeipaddresses_.MergeFrom(from.secondarynodeipaddresses_);
   secondarynodeports_.MergeFrom(from.secondarynodeports_);
   secondarynodelocationids_.MergeFrom(from.secondarynodelocationids_);
@@ -854,24 +913,26 @@ void GetClusterInfoMessage::Swap(GetClusterInfoMessage* other) {
   InternalSwap(other);
 }
 void GetClusterInfoMessage::InternalSwap(GetClusterInfoMessage* other) {
-  secondarynodeipaddresses_.UnsafeArenaSwap(&other->secondarynodeipaddresses_);
-  secondarynodeports_.UnsafeArenaSwap(&other->secondarynodeports_);
-  secondarynodelocationids_.UnsafeArenaSwap(&other->secondarynodelocationids_);
-  secondarynodegenericstatus_.UnsafeArenaSwap(&other->secondarynodegenericstatus_);
-  secondarynodespecificstatus_.UnsafeArenaSwap(&other->secondarynodespecificstatus_);
+  using std::swap;
+  secondarynodeipaddresses_.InternalSwap(&other->secondarynodeipaddresses_);
+  secondarynodeports_.InternalSwap(&other->secondarynodeports_);
+  secondarynodelocationids_.InternalSwap(&other->secondarynodelocationids_);
+  secondarynodegenericstatus_.InternalSwap(&other->secondarynodegenericstatus_);
+  secondarynodespecificstatus_.InternalSwap(&other->secondarynodespecificstatus_);
   primarynodeipaddress_.Swap(&other->primarynodeipaddress_);
   primarynodegenericstatus_.Swap(&other->primarynodegenericstatus_);
   primarynodespecificstatus_.Swap(&other->primarynodespecificstatus_);
-  std::swap(clustercreated_, other->clustercreated_);
-  std::swap(primarynodeport_, other->primarynodeport_);
-  std::swap(primarynodelocationid_, other->primarynodelocationid_);
-  std::swap(nsecondarynodes_, other->nsecondarynodes_);
-  std::swap(_cached_size_, other->_cached_size_);
+  swap(clustercreated_, other->clustercreated_);
+  swap(primarynodeport_, other->primarynodeport_);
+  swap(primarynodelocationid_, other->primarynodelocationid_);
+  swap(nsecondarynodes_, other->nsecondarynodes_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata GetClusterInfoMessage::GetMetadata() const {
   protobuf_CentralCluster_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_CentralCluster_2eproto::file_level_metadata[0];
+  return protobuf_CentralCluster_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -908,11 +969,12 @@ void GetClusterInfoMessage::set_primarynodeipaddress(const ::std::string& value)
 void GetClusterInfoMessage::set_primarynodeipaddress(::std::string&& value) {
   
   primarynodeipaddress_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:CentralCluster.GetClusterInfoMessage.primaryNodeIpAddress)
 }
 #endif
 void GetClusterInfoMessage::set_primarynodeipaddress(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   primarynodeipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.primaryNodeIpAddress)
@@ -988,11 +1050,12 @@ void GetClusterInfoMessage::set_primarynodegenericstatus(const ::std::string& va
 void GetClusterInfoMessage::set_primarynodegenericstatus(::std::string&& value) {
   
   primarynodegenericstatus_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:CentralCluster.GetClusterInfoMessage.primaryNodeGenericStatus)
 }
 #endif
 void GetClusterInfoMessage::set_primarynodegenericstatus(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   primarynodegenericstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.primaryNodeGenericStatus)
@@ -1040,11 +1103,12 @@ void GetClusterInfoMessage::set_primarynodespecificstatus(const ::std::string& v
 void GetClusterInfoMessage::set_primarynodespecificstatus(::std::string&& value) {
   
   primarynodespecificstatus_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:CentralCluster.GetClusterInfoMessage.primaryNodeSpecificStatus)
 }
 #endif
 void GetClusterInfoMessage::set_primarynodespecificstatus(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   primarynodespecificstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.primaryNodeSpecificStatus)
@@ -1108,7 +1172,14 @@ void GetClusterInfoMessage::set_secondarynodeipaddresses(int index, const ::std:
   // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
   secondarynodeipaddresses_.Mutable(index)->assign(value);
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::set_secondarynodeipaddresses(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
+  secondarynodeipaddresses_.Mutable(index)->assign(std::move(value));
+}
+#endif
 void GetClusterInfoMessage::set_secondarynodeipaddresses(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodeipaddresses_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
 }
@@ -1125,7 +1196,14 @@ void GetClusterInfoMessage::add_secondarynodeipaddresses(const ::std::string& va
   secondarynodeipaddresses_.Add()->assign(value);
   // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::add_secondarynodeipaddresses(::std::string&& value) {
+  secondarynodeipaddresses_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
+}
+#endif
 void GetClusterInfoMessage::add_secondarynodeipaddresses(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodeipaddresses_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:CentralCluster.GetClusterInfoMessage.secondaryNodeIpAddresses)
 }
@@ -1223,7 +1301,14 @@ void GetClusterInfoMessage::set_secondarynodegenericstatus(int index, const ::st
   // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
   secondarynodegenericstatus_.Mutable(index)->assign(value);
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::set_secondarynodegenericstatus(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
+  secondarynodegenericstatus_.Mutable(index)->assign(std::move(value));
+}
+#endif
 void GetClusterInfoMessage::set_secondarynodegenericstatus(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodegenericstatus_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
 }
@@ -1240,7 +1325,14 @@ void GetClusterInfoMessage::add_secondarynodegenericstatus(const ::std::string& 
   secondarynodegenericstatus_.Add()->assign(value);
   // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::add_secondarynodegenericstatus(::std::string&& value) {
+  secondarynodegenericstatus_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
+}
+#endif
 void GetClusterInfoMessage::add_secondarynodegenericstatus(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodegenericstatus_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:CentralCluster.GetClusterInfoMessage.secondaryNodeGenericStatus)
 }
@@ -1278,7 +1370,14 @@ void GetClusterInfoMessage::set_secondarynodespecificstatus(int index, const ::s
   // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
   secondarynodespecificstatus_.Mutable(index)->assign(value);
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::set_secondarynodespecificstatus(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
+  secondarynodespecificstatus_.Mutable(index)->assign(std::move(value));
+}
+#endif
 void GetClusterInfoMessage::set_secondarynodespecificstatus(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodespecificstatus_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
 }
@@ -1295,7 +1394,14 @@ void GetClusterInfoMessage::add_secondarynodespecificstatus(const ::std::string&
   secondarynodespecificstatus_.Add()->assign(value);
   // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
 }
+#if LANG_CXX11
+void GetClusterInfoMessage::add_secondarynodespecificstatus(::std::string&& value) {
+  secondarynodespecificstatus_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
+}
+#endif
 void GetClusterInfoMessage::add_secondarynodespecificstatus(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   secondarynodespecificstatus_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:CentralCluster.GetClusterInfoMessage.secondaryNodeSpecificStatus)
 }

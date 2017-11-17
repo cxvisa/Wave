@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains the resources for Isle Core Module. -->
+
+<ModuleResources ModuleName = "IsleCore" ComponentName = "Isle">
+    <ResourceEnum Name = "IsleStatus">
+        <Resource Name = "ISLE_STATUS">SUCCESS</Resource>
+    </ResourceEnum>
+</ModuleResources>

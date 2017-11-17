@@ -1,0 +1,106 @@
+/***************************************************************************
+ *   Copyright (C) 2005-2006 Brocade Communications Systems, Inc.          *
+ *   All rights reserved.                                                  *
+ *   Author : Vidyasagara Reddy Guntaka                                    *
+ ***************************************************************************/
+
+#include "Version/IsleVersion.h"
+
+namespace IsleNs
+{
+
+IsleVersion::IsleVersion ()
+    : m_major       ("WAVE_VERSION_MAJOR"),
+      m_minor       ("WAVE_VERSION_MINOR"),
+      m_patch       ("WAVE_VERSION_PATCH"),
+      m_revision    ("WAVE_VERSION_REVISION"),
+      m_buildType   ("WAVE_BUILD_TYPE"),
+      m_buildNumber ("WAVE_BUILD_NUMBER"),
+      m_date        ("WAVE_VERSION_DATE"),
+      m_user        ("WAVE_VERSION_USER"),
+      m_host        ("WAVE_VERSION_HOST"),
+      m_domain      ("WAVE_VERSION_DOMAIN")
+{
+}
+
+IsleVersion::~IsleVersion ()
+{
+}
+
+string IsleVersion::getMajor () const
+{
+    return (m_major);
+}
+
+string IsleVersion::getMinor () const
+{
+    return (m_minor);
+}
+
+string IsleVersion::getPatch () const
+{
+    return (m_patch);
+}
+
+string IsleVersion::getRevision () const
+{
+    return (m_revision);
+}
+
+string IsleVersion::getBuildType () const
+{
+    return (m_buildType);
+}
+
+string IsleVersion::getBuildNumber () const
+{
+    return (m_buildNumber);
+}
+
+string IsleVersion::getDate () const
+{
+    return (m_date);
+}
+
+string IsleVersion::getUser () const
+{
+    return (m_user);
+}
+
+string IsleVersion::getHost () const
+{
+    return (m_host);
+}
+
+string IsleVersion::getDomain () const
+{
+    return (m_domain);
+}
+
+const IsleVersion *IsleVersion::getInstance ()
+{
+    static IsleVersion *pIsleVersion = NULL;
+
+    if (NULL == pIsleVersion)
+    {
+        pIsleVersion = new IsleVersion ();
+    }
+
+    return (pIsleVersion);
+}
+
+string IsleVersion::getVersionString ()
+{
+    const IsleVersion *pIsleVersion       = getInstance ();
+          string        isleVersionString;
+
+    if (NULL != pIsleVersion)
+    {
+        isleVersionString = string ("") + pIsleVersion->getMajor () + "." + pIsleVersion->getMinor () + "." + pIsleVersion->getPatch () + "." + pIsleVersion->getRevision () + "-" + pIsleVersion->getBuildType () + "." + pIsleVersion->getBuildNumber ();
+    }
+
+    return (isleVersionString);
+}
+
+}
+

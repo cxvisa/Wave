@@ -1,0 +1,26 @@
+include ../Makefile.tools
+
+.PHONY: all phony
+
+all: buildisleresources
+
+XML_SOURCES := $(wildcard *.xml)
+
+ISLE_RESOURCE_GENERATOR := $(WAVE_HOME)/resourcegenerator/WaveResourceGenerator.$(OS).$(ARCH_HOST)
+
+vpath %.h $(BUILD_DIR_DYNAMIC_SRC)
+
+.SECONDEXPANSION:
+
+buildisleresources: $(XML_SOURCES) $(ISLE_RESOURCE_GENERATOR) $(MKFS) | $($(ISLE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
+	@$(ECHOCMD) "Generating Isle Resources ..."
+	@$(ECHOCMD) ""
+	$(ISLE_RESOURCE_GENERATOR) IsleComponents.xml $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP) Isle
+	@$(ECHOCMD) ""
+	@$(ECHOCMD) "Completed generating Isle Resources."
+	@$(ECHOCMD) ""
+
+clean:
+	echo do not clean here, do it with Isle/source directory Makefile
+
+include $(WAVE_SRC)/commonMakefileEnd
