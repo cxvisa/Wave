@@ -1,7 +1,7 @@
 git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
-PKG_CONFIG_PATH=/usr/lib/openssl-1.0/pkgconfig make -j 5
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig make -j 5
 make install
 cd third_party/protobuf
 make install

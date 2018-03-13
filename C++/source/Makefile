@@ -11,7 +11,7 @@ ALL_DEPS_GOALS := all $(LIB.SO.VER) $(LIB.A)
 
 ALL_DEPS_GOALS += $(LIB.SO)
 
-all: | $(LIB.SO.VER) $(LIB.SO)
+all: | $(LIB.SO.VER) $(LIB.SO) buildgrpc
 
 WHO_GENERATES_INCLUDES := $(WAVE_RESOURCES) $(EXTRACTION)
 
@@ -25,6 +25,9 @@ WAVE_RESOURCE_ENUMS := $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/WaveResourc
 WAVE_VERSION        := $(BUILD_DIR_DYNAMIC_SRC)/WaveVersion.cpp
 
 include commonMakefileEnd
+
+buildgrpc:
+	$(MAKE) -C gRPC/proto -f Makefile.grpc
 
 clean:
 	rm -rf $(HOME)/build/$(PROJECT)

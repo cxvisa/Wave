@@ -1,0 +1,24 @@
+include ../../Makefile.versioninfo
+include ../../Makefile.tools
+
+.PHONY: all
+
+vpath %.pb.cc $(BUILD_DIR_DYNAMIC_SRC)
+vpath %.pb.cpp $(BUILD_DIR_DYNAMIC_SRC)
+
+ALL_PROTO_FILES=$(shell ls *.proto)
+ALL_PROTO_CPP_FILES=$(patsubst %.proto,%.pb.cpp,$(ALL_PROTO_FILES))
+ALL_PROTO_CC_FILES=$(patsubst %.proto,%.pb.cc,$(ALL_PROTO_FILES))
+
+all: $(ALL_PROTO_CPP_FILES)
+
+MKFS := $(MAKEFILE_LIST)
+
+%.pb.cc : %.proto
+	protoc --cpp_out=$(BUILD_DIR_DYNAMIC_SRC) $<
+
+%.pb.cpp: %.pb.cc
+	mv $(BUILD_DIR_DYNAMIC_SRC)/$< $(BUILD_DIR_DYNAMIC_SRC)/$@
+
+include $(SRC_ROOT)/commonMakefileEnd
+

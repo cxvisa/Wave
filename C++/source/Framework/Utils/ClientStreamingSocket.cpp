@@ -13,6 +13,7 @@
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerBasedMessagePayload.h"
 
 #include <errno.h>
+#include <sys/uio.h>
 
 namespace WaveNs
 {
