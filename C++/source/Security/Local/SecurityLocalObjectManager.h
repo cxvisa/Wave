@@ -9,24 +9,36 @@
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
 namespace WaveNs
 {
+
+class WaveAsynchronousContextForBootPhases;
+class WaveLinearSequencerContext;
 
 class SecurityLocalObjectManager : public WaveLocalObjectManager
 {
     private:
-        SecurityLocalObjectManager ();
+             SecurityLocalObjectManager  ();
+
+        void initialize                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+        void initializeSslLibraryStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeServerContextStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected:
     public:
         virtual ~SecurityLocalObjectManager ();
 
-        static string getServiceName ();
-        static SecurityLocalObjectManager *getInstance ();
+        static string                      getServiceName ();
+        static SecurityLocalObjectManager *getInstance    ();
 
         // Now the data members
 
     private:
+        SSL_CTX *m_pSslContext;
+
     protected:
     public:
 };
