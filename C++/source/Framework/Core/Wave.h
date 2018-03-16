@@ -117,6 +117,8 @@ class Wave
         static void         disableLightHouse                         ();
         static void         enableGrpc                                ();
         static void         disableGrpc                               ();
+        static void enableSecurity ();
+        static void disableSecurity ();
 
         static ResourceId   persistencePostBootCheck              ();
         static bool         clusterEnabledCheck                   ();
@@ -162,6 +164,7 @@ class Wave
         static bool                                           m_enableSystemManagementSupport;
         static bool                                           m_enableLightHouseSupport;
         static bool                                           m_enableGrpcSupport;
+        static bool m_enableSecuritySupport;
         static string                                         m_waveUserClientPath;
         static string                                         m_waveUserClientParams;
 

@@ -58,6 +58,8 @@
 
 #include "gRPC/GrpcGatewayLocalObjectManager.h"
 
+#include "Security/Local/SecurityLocalObjectManager.h"
+
 #include "Framework/Utils/FileUtils.h"
 
 #include <time.h>
@@ -96,6 +98,7 @@ bool                                           Wave::m_enableFileServiceSupport 
 bool                                           Wave::m_enableSystemManagementSupport                      = true;
 bool                                           Wave::m_enableLightHouseSupport                            = true;
 bool                                           Wave::m_enableGrpcSupport                                  = true;
+bool Wave::m_enableSecuritySupport = true;
 
 PersistencePostBootCheck                       Wave::m_persistencePostBootCheck;
 WaveMutex                                      Wave::m_clusterEnabledCheckMutex;
@@ -126,6 +129,7 @@ void Wave::enableAllFeatures ()
     enableSystemManagement    ();
     enableLightHouse          ();
     enableGrpc                ();
+    enableSecurity ();
 }
 
 void Wave::enablePersistence ()
@@ -276,6 +280,16 @@ void Wave::enableGrpc ()
 void Wave::disableGrpc ()
 {
     m_enableGrpcSupport = false;
+}
+
+void Wave::enableSecurity ()
+{
+    m_enableSecuritySupport = true;
+}
+
+void Wave::disableSecurity ()
+{
+    m_enableSecuritySupport = false;
 }
 
 void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
@@ -554,6 +568,11 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
     {
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerObjectManager::getInstance), false);
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerSignalObjectManager::getInstance), false);
+    }
+
+    if (true == m_enableSecuritySupport)
+    {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (SecurityLocalObjectManager::getInstance), false);
     }
 
     // Instantiate Native Wave Services here
