@@ -37,6 +37,7 @@
 #include "Framework/Utils/TimeZoneToolKit.h"
 #include "ManagementInterface/ManagementInterfaceObjectManager.h"
 #include "HttpInterface/HttpInterfaceReceiverObjectManager.h"
+#include "HttpInterface/HttpsInterfaceReceiverObjectManager.h"
 #include "Framework/Messaging/HaPeer/HaPeerMessageReceiverObjectManager.h"
 #include "Framework/Messaging/HaPeer/HaPeerMessageTransportObjectManager.h"
 #include "Framework/Core/Test/FrameworkTestability6ObjectManager.h"
@@ -508,8 +509,8 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableManagementInterfaceSupport)
     {
-
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HttpInterfaceReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HttpsInterfaceReceiverObjectManager::getInstance));
 
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceReceiverObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceObjectManager::getInstance));

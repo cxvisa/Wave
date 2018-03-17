@@ -1,5 +1,5 @@
-/***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+/**************************************************************************
+ *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -30,9 +30,10 @@ namespace WaveNs
 
 map<WaveHttpInterfaceMethod, HttpInterfaceMethodWorker *> HttpInterfaceReceiverObjectManager::m_httpInterfaceMethodWorkers;
 
-HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager ()
- : WaveLocalObjectManagerForUserSpecificTasks (getServiceName ())
+void HttpInterfaceReceiverObjectManager::construct ()
 {
+    m_pServerSocketForHttpInterfaceClients = NULL;
+
     setAllowAutomaticallyUnlistenForEvents (false);
 
     restrictMessageHistoryLogging (false, false, false);
@@ -64,6 +65,26 @@ HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager ()
     addDebugFunction ((ShellCmdFunction) (&WaveServerPageDirectory::print), "printwaveserverpagetree");
 }
 
+HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager ()
+ : WaveLocalObjectManagerForUserSpecificTasks (getServiceName ())
+{
+    construct ();
+}
+
+HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager (const string &serviceName)
+    : WaveLocalObjectManagerForUserSpecificTasks (serviceName)
+{
+    // Deliberately not using "construct" member function.
+    // This is mainly used by HTTPS OM.
+    // The method workers and other aspects taken care of by construct needs to be done only once in the entire system.
+
+    m_pServerSocketForHttpInterfaceClients = NULL;
+
+    setAllowAutomaticallyUnlistenForEvents (false);
+
+    restrictMessageHistoryLogging (false, false, false);
+}
+
 HttpInterfaceReceiverObjectManager::~HttpInterfaceReceiverObjectManager ()
 {
 }
@@ -87,11 +108,21 @@ WaveServiceId HttpInterfaceReceiverObjectManager::getWaveServiceId ()
     return ((getInstance())->getServiceId ());
 }
 
+bool HttpInterfaceReceiverObjectManager::getIsTranportSecurityEnabled () const
+{
+    return (false);
+}
+
+SI32 HttpInterfaceReceiverObjectManager::getInterfaceReceiverPort () const
+{
+    return (FrameworkToolKit::getHttpInterfaceReceiverPort ());
+}
+
 void HttpInterfaceReceiverObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    m_pServerSocketForHttpInterfaceClients = new ServerStreamingSocket (FrameworkToolKit::getHttpInterfaceReceiverPort (), 128);
+    m_pServerSocketForHttpInterfaceClients = new ServerStreamingSocket (getInterfaceReceiverPort (), 128);
 
     waveAssert (NULL != m_pServerSocketForHttpInterfaceClients, __FILE__, __LINE__);
 
@@ -147,7 +178,7 @@ void HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler
 
         trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW HTTP Interface Client Connections...");
 
-        successfullyAcceptedNewConnection = m_pServerSocketForHttpInterfaceClients->accept (*pNewServerStreamingSocket, true);
+        successfullyAcceptedNewConnection = m_pServerSocketForHttpInterfaceClients->accept (*pNewServerStreamingSocket, getIsTranportSecurityEnabled ());
 
         if (true != successfullyAcceptedNewConnection)
         {

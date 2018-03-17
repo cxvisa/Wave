@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -21,6 +21,7 @@ class HttpInterfaceReceiverObjectManager : public WaveLocalObjectManagerForUserS
 {
     private :
                       HttpInterfaceReceiverObjectManager      ();
+                void  construct                               ();
 
         virtual void  initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void  boot                                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
@@ -29,6 +30,11 @@ class HttpInterfaceReceiverObjectManager : public WaveLocalObjectManagerForUserS
                 void  bootCompleteForThisLocationEventHandler (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent);
 
     protected :
+                     HttpInterfaceReceiverObjectManager (const string &serviceName);
+
+        virtual bool getIsTranportSecurityEnabled () const;
+        virtual SI32 getInterfaceReceiverPort     () const;
+
     public :
         virtual                                    ~HttpInterfaceReceiverObjectManager ();
 
