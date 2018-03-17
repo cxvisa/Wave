@@ -130,11 +130,34 @@ void SecurityLocalObjectManager::initializeLoadCertificatesStep (WaveLinearSeque
     return;
 }
 
+int sslVerifyCallback (int preVerifyOk, X509_STORE_CTX *pX509Context)
+{
+    if (0 == preVerifyOk)
+    {
+        WaveNs::trace (TRACE_LEVEL_ERROR, "Certificate Verification Failed :");
+
+        char buffer[256];
+
+        X509 *pCertificate = X509_STORE_CTX_get_current_cert (pX509Context);
+
+        X509_NAME_oneline (X509_get_subject_name (pCertificate), buffer, 256);
+
+        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "    Subject Name: %s", buffer);
+
+        X509_NAME_oneline (X509_get_issuer_name (pCertificate), buffer, 256);
+
+        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "    Issuer  Name: %s", buffer);
+    }
+
+    // TBD : For now always succeed.
+    return (1);
+}
+
 void SecurityLocalObjectManager::initializeSetPeerValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeSetPeerValidationStep : Entering ...");
 
-    // SSL_CTX_set_verify (m_pSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+    SSL_CTX_set_verify (m_pSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
