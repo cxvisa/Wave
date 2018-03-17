@@ -148,9 +148,24 @@ int sslVerifyCallback (int preVerifyOk, X509_STORE_CTX *pX509Context)
 
         WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "    Issuer  Name: %s", buffer);
     }
+    else
+    {
+        WaveNs::trace (TRACE_LEVEL_SUCCESS, "Certificate Verification Succeeded :");
 
-    // TBD : For now always succeed.
-    return (1);
+        char buffer[256];
+
+        X509 *pCertificate = X509_STORE_CTX_get_current_cert (pX509Context);
+
+        X509_NAME_oneline (X509_get_subject_name (pCertificate), buffer, 256);
+
+        WaveNs::tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "    Subject Name: %s", buffer);
+
+        X509_NAME_oneline (X509_get_issuer_name (pCertificate), buffer, 256);
+
+        WaveNs::tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "    Issuer  Name: %s", buffer);
+    }
+
+    return (preVerifyOk);
 }
 
 void SecurityLocalObjectManager::initializeSetPeerValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
