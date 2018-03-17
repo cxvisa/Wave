@@ -30,7 +30,7 @@ class StreamingSocketBase
                 bool   isValid                            ();
 
         virtual bool   bind                               (const SI32 port) = 0;
-        virtual bool   accept                             (StreamingSocketBase &newStreamingSocketBase) = 0;
+        virtual bool   accept                             (StreamingSocketBase &newStreamingSocketBase, const bool &enableSecurity = false) = 0;
         virtual bool   connect                            (const string &host, const SI32 port) = 0;
                 bool   listen                             ();
 
@@ -54,6 +54,8 @@ class StreamingSocketBase
                 void   enableSecurity    ();
                 void   disableSecurity   ();
                 bool   isSecurityEnabled ();
+                SSL   *getPSsl           ();
+
 
 
 
@@ -61,14 +63,15 @@ class StreamingSocketBase
 
     private :
     protected :
-                     SI32 m_socket;
-                     SI32 m_maximumNumberOfConnections;
-
         static const UI32 s_maximumDataLengthToReceive = 4 * 1024; // 4 KB - We will read 4 KB at a time - but there is no limit on the message size that can be sent across.
-                     string m_toMessageVersion;
-                     UI8    m_toSerializationType;
 
-                     SSL *m_pSsl;
+        SI32    m_socket;
+        SI32    m_maximumNumberOfConnections;
+
+        string  m_toMessageVersion;
+        UI8     m_toSerializationType;
+
+        SSL    *m_pSsl;
 
     public :
 };

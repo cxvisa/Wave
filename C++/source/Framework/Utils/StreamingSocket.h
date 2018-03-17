@@ -40,7 +40,7 @@ class StreamingSocket : public StreamingSocketBase
                 bool   setTcpKeepAliveProbeCount          (UI32 numberOfProbes);
 
         virtual bool   bind                               (const SI32 port);
-        virtual bool   accept                             (StreamingSocketBase &newStreamingSocketBase);
+        virtual bool   accept                             (StreamingSocketBase &newStreamingSocketBase, const bool &enableSecurity = false);
         virtual bool   connect                            (const string &host, const SI32 port);
 
         virtual string getSourceIpAddress                 ();

@@ -125,9 +125,9 @@ bool ServerStreamingSocket::operator >> (UI32 &value)
     return (receiveUI32 (value));
 }
 
-bool ServerStreamingSocket::accept (ServerStreamingSocket &newSocket)
+bool ServerStreamingSocket::accept (ServerStreamingSocket &newSocket, const bool &enableSecurity)
 {
-    bool successfullyAcceptedNewConnection = StreamingSocket::accept (newSocket);
+    bool successfullyAcceptedNewConnection = StreamingSocket::accept (newSocket, enableSecurity);
 
     if (true != successfullyAcceptedNewConnection)
     {

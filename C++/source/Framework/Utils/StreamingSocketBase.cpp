@@ -177,22 +177,27 @@ SI32 StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)
   {
     while ( sendLen < maximumBufferLength )
     {
-      sendStatus = ::send (m_socket, (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen), 0); //MSG_NOSIGNAL
+        if (true == (isSecurityEnabled ()))
+        {
+            sendStatus = SSL_write (getPSsl (), (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen));
+        }
+        else
+        {
+            sendStatus = ::send (m_socket, (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen), 0); //MSG_NOSIGNAL
+        }
 
-      tracePrintf (TRACE_LEVEL_DEVEL, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)Sen(Status %d, Len %d, Total %d)",sendStatus, sendLen, maximumBufferLength);
+        tracePrintf (TRACE_LEVEL_DEVEL, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength)Sen(Status %d, Len %d, Total %d)",sendStatus, sendLen, maximumBufferLength);
 
-      if (-1 == sendStatus)
-      {
+        if (-1 == sendStatus)
+        {
         return (sendStatus);
-      }
+        }
 
-      sendLen += sendStatus;
+        sendLen += sendStatus;
 
-      if ( sendLen < maximumBufferLength ){
+        if ( sendLen < maximumBufferLength ){
         tracePrintf (TRACE_LEVEL_WARN, "StreamingSocketBase::send(UI8 *pBuffer, const UI32 maximumBufferLength) Fragmented Send");
-      }
-
-
+        }
     }
   }
   return (sendLen);
@@ -225,7 +230,17 @@ bool StreamingSocketBase::receive (string &dataString)
     }
 
     char *pBuffer = new char[s_maximumDataLengthToReceive + 1];
-    SI32  status  = ::recv (m_socket, pBuffer, s_maximumDataLengthToReceive, 0);
+
+    SI32 status = 0;
+
+    if (true == isSecurityEnabled ())
+    {
+        status = SSL_read (getPSsl (), pBuffer, s_maximumDataLengthToReceive);
+    }
+    else
+    {
+        status = ::recv (m_socket, pBuffer, s_maximumDataLengthToReceive, 0);
+    }
 
     dataString = "";
 
@@ -260,7 +275,16 @@ SI32 StreamingSocketBase::receive (UI8 *pBuffer, const UI32 maximumBufferLength)
         return (false);
     }
 
-    SI32 status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0);
+    SI32 status = 0;
+
+    if (true == isSecurityEnabled ())
+    {
+        status = SSL_read (getPSsl (), (char *) pBuffer, maximumBufferLength);
+    }
+    else
+    {
+        status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0);
+    }
 
     if (-1 == status)
     {
@@ -281,7 +305,16 @@ SI32 StreamingSocketBase::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLeng
         return (0);
     }
 
-    SI32 status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0); //MSG_WAITALL);
+    SI32 status = 0;
+
+    if (true == isSecurityEnabled ())
+    {
+        status = SSL_read (getPSsl (), (char *) pBuffer, maximumBufferLength);
+    }
+    else
+    {
+        status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0);
+    }
 
     if (-1 == status)
     {
@@ -359,6 +392,12 @@ void StreamingSocketBase::enableSecurity ()
             SecurityUtils::traceSslErrors ();
             WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
+
+        if (0 >= (SSL_set_fd (m_pSsl, m_socket)))
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
     }
 }
 
@@ -375,5 +414,9 @@ bool StreamingSocketBase::isSecurityEnabled ()
     return (NULL != m_pSsl);
 }
 
+SSL *StreamingSocketBase::getPSsl ()
+{
+    return (m_pSsl);
+}
 
 }

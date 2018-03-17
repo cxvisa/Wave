@@ -35,7 +35,7 @@ class ServerStreamingSocket : protected StreamingSocket
                       bool                         operator >>           (string &dataString);
                       bool                         operator >>           (FixedSizeBuffer &fizedSizeBuffer);
                       bool                         operator >>           (UI32 &value);
-                      bool                         accept                (ServerStreamingSocket &newSocket);
+                      bool                         accept                (ServerStreamingSocket &newSocket, const bool &enableSecurity = false);
         virtual       string                       getSourceIpAddress    ();
         virtual       string                       getPeerIpAddress      ();
         virtual       SI32                         getPeerPort           ();
@@ -52,9 +52,9 @@ class ServerStreamingSocket : protected StreamingSocket
 
     private :
         ServerStreamingSocketStatus m_status;
-        static const  UI32          m_customDefaultKeepAliveIdleTimeoutInMilliSeconds;
-        static const  UI32          m_customDefaultKeepAliveProbeIntervalInMilliSeconds;
-        static const  UI32          m_customDefaultKeepAliveProbeCount;
+        static const UI32 m_customDefaultKeepAliveIdleTimeoutInMilliSeconds;
+        static const UI32 m_customDefaultKeepAliveProbeIntervalInMilliSeconds;
+        static const UI32 m_customDefaultKeepAliveProbeCount;
     protected :
     public :
 };

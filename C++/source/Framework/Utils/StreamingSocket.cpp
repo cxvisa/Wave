@@ -7,6 +7,8 @@
 #include "Framework/Utils/StreamingSocket.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
+#include "Security/Local/SecurityUtils.h"
+
 #include <errno.h>
 //#include "Framework/ObjectModel/SerializableObject.h"
 
@@ -247,7 +249,7 @@ bool StreamingSocket::bind (const SI32 port)
     }
 }
 
-bool StreamingSocket::accept (StreamingSocketBase &newStreamingSocketBase)
+bool StreamingSocket::accept (StreamingSocketBase &newStreamingSocketBase, const bool &enableSecurity)
 {
     if (true != (isValid ()))
     {
@@ -260,6 +262,17 @@ bool StreamingSocket::accept (StreamingSocketBase &newStreamingSocketBase)
 
     if ((newStreamingSocketBase.getSocket ()) > 0)
     {
+        if (true == enableSecurity)
+        {
+            newStreamingSocketBase.enableSecurity ();
+
+            if (0 >= (SSL_accept (newStreamingSocketBase.getPSsl ())))
+            {
+                SecurityUtils::traceSslErrors ();
+                return (false);
+            }
+        }
+
         return (true);
     }
     else

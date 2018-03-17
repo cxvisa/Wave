@@ -147,7 +147,7 @@ void HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler
 
         trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW HTTP Interface Client Connections...");
 
-        successfullyAcceptedNewConnection = m_pServerSocketForHttpInterfaceClients->accept (*pNewServerStreamingSocket);
+        successfullyAcceptedNewConnection = m_pServerSocketForHttpInterfaceClients->accept (*pNewServerStreamingSocket, true);
 
         if (true != successfullyAcceptedNewConnection)
         {

@@ -134,7 +134,7 @@ void SecurityLocalObjectManager::initializeSetPeerValidationStep (WaveLinearSequ
 {
     trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeSetPeerValidationStep : Entering ...");
 
-    SSL_CTX_set_verify (m_pSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+    // SSL_CTX_set_verify (m_pSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
