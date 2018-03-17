@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2007 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -9,14 +9,19 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/ObjectModel/SerializableObject.h"
+#include "Security/Local/SecurityUtils.h"
+
+#include <openssl/err.h>
+#include <openssl/ssl.h>
 
 namespace WaveNs
 {
 
 StreamingSocketBase::StreamingSocketBase (const SI32 maximumNumberOfConnections)
     : m_maximumNumberOfConnections (maximumNumberOfConnections),
-      m_toMessageVersion (""),
-      m_toSerializationType (SERIALIZE_WITH_ATTRIBUTE_NAME)
+      m_toMessageVersion           (""),
+      m_toSerializationType        (SERIALIZE_WITH_ATTRIBUTE_NAME),
+      m_pSsl                       (NULL)
 {
     m_socket = -1;
 }
@@ -27,12 +32,18 @@ StreamingSocketBase::StreamingSocketBase ()
     m_maximumNumberOfConnections = 128;
     m_toMessageVersion           = "";
     m_toSerializationType        = SERIALIZE_WITH_ATTRIBUTE_NAME;
+    m_pSsl                       = NULL;
 }
 
 StreamingSocketBase::~StreamingSocketBase ()
 {
     if (true == (isValid ()))
     {
+        if (true == (isSecurityEnabled ()))
+        {
+            disableSecurity ();
+        }
+
         waveCloseSocket (m_socket);
     }
 }
@@ -335,6 +346,33 @@ string StreamingSocketBase::getMessageVersion () const
 UI8 StreamingSocketBase::getSerializationType () const
 {
     return (m_toSerializationType);
+}
+
+void StreamingSocketBase::enableSecurity ()
+{
+    if (true == (isValid ()))
+    {
+        m_pSsl = SSL_new (SecurityUtils::getPSslContext ());
+
+        if (NULL == m_pSsl)
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
+    }
+}
+
+void StreamingSocketBase::disableSecurity ()
+{
+    if (NULL != m_pSsl)
+    {
+        SSL_free (m_pSsl);
+    }
+}
+
+bool StreamingSocketBase::isSecurityEnabled ()
+{
+    return (NULL != m_pSsl);
 }
 
 

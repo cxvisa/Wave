@@ -21,11 +21,13 @@ class WaveLinearSequencerContext;
 class SecurityLocalObjectManager : public WaveLocalObjectManager
 {
     private:
-             SecurityLocalObjectManager  ();
+             SecurityLocalObjectManager      ();
 
-        void initialize                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void initializeSslLibraryStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeServerContextStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initialize                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+        void initializeSslLibraryStep        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeServerContextStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesStep  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeSetPeerValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected:
     public:
@@ -33,6 +35,8 @@ class SecurityLocalObjectManager : public WaveLocalObjectManager
 
         static string                      getServiceName ();
         static SecurityLocalObjectManager *getInstance    ();
+
+        static SSL_CTX                    *getPSslContext ();
 
         // Now the data members
 

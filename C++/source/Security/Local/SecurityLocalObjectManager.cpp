@@ -4,6 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
+#include "Security/Local/SecurityUtils.h"
+#include "Framework/Utils/TraceUtils.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Security/Local/SecurityLocalObjectManager.h"
@@ -47,6 +49,9 @@ void SecurityLocalObjectManager::initialize (WaveAsynchronousContextForBootPhase
     {
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeSslLibraryStep),
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeServerContextStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeLoadCertificatesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeSetPeerValidationStep),
+
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::waveLinearSequencerFailedStep),
     };
@@ -66,6 +71,7 @@ void SecurityLocalObjectManager::initializeSslLibraryStep (WaveLinearSequencerCo
     SSL_load_error_strings     ();
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
 }
 
 void SecurityLocalObjectManager::initializeServerContextStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
@@ -78,13 +84,65 @@ void SecurityLocalObjectManager::initializeServerContextStep (WaveLinearSequence
 
     if (NULL == pSslContext)
     {
-        ERR_print_errors_fp (stderr);
+        SecurityUtils::traceSslErrors ();
         waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pSslContext = pSslContext;
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
+}
+
+void SecurityLocalObjectManager::initializeLoadCertificatesStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
+{
+    trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeLoadCertificatesStep : Entering ...");
+
+    if (0 >= (SSL_CTX_use_certificate_file (m_pSslContext, "pki/public-private.pem", SSL_FILETYPE_PEM)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (0 >= (SSL_CTX_use_PrivateKey_file (m_pSslContext, "pki/public-private.pem", SSL_FILETYPE_PEM)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (false == (SSL_CTX_check_private_key (m_pSslContext)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (false == (SSL_CTX_load_verify_locations (m_pSslContext, "pki/cacert.pem", NULL)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
+}
+
+void SecurityLocalObjectManager::initializeSetPeerValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
+{
+    trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeSetPeerValidationStep : Entering ...");
+
+    SSL_CTX_set_verify (m_pSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
+}
+
+SSL_CTX *SecurityLocalObjectManager::getPSslContext ()
+{
+    return ((getInstance ())->m_pSslContext);
 }
 
 }
