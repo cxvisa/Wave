@@ -1,0 +1,13 @@
+mkdir ~/openvpn-ca
+cp -ai /usr/share/easy-rsa/3.0.3/* ~/openvpn-ca
+cd openvpn-ca/
+./easyrsa init-pki
+./easyrsa build-ca nopass (CXFI.NETWORK)
+./easyrsa build-server-full server nopass
+./easyrsa build-client-full CXFI-CLIENT-1 nopass
+./easyrsa gen-dh
+openvpn --genkey --secret pki/ta.key
+
+
+// To be able to import on clients
+openssl pkcs12 -export -in issued/CXFI-CLIENT-1.crt -inkey private/CXFI-CLIENT-1.key -out CXFI-CLIENT-1.p12
