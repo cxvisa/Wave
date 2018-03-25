@@ -21,13 +21,15 @@ class WaveLinearSequencerContext;
 class SecurityLocalObjectManager : public WaveLocalObjectManager
 {
     private:
-             SecurityLocalObjectManager      ();
+             SecurityLocalObjectManager            ();
 
-        void initialize                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void initializeSslLibraryStep        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeServerContextStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeLoadCertificatesStep  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeSetPeerValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initialize                            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+
+        void initializeSslLibraryStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeServerContextStep           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesForTlsStep  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesForDtlsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeSetPeerValidationStep       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected:
     public:
@@ -36,12 +38,14 @@ class SecurityLocalObjectManager : public WaveLocalObjectManager
         static string                      getServiceName ();
         static SecurityLocalObjectManager *getInstance    ();
 
-        static SSL_CTX                    *getPTlsSslContext ();
+        static SSL_CTX                    *getPTlsSslContext  ();
+        static SSL_CTX                    *getPDtlsSslContext ();
 
         // Now the data members
 
     private:
         SSL_CTX *m_pTlsSslContext;
+        SSL_CTX *m_pDtlsSslContext;
 
     protected:
     public:
