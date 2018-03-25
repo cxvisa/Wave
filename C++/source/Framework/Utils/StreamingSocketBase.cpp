@@ -385,7 +385,7 @@ void StreamingSocketBase::enableSecurity ()
 {
     if (true == (isValid ()))
     {
-        m_pSsl = SSL_new (SecurityUtils::getPSslContext ());
+        m_pSsl = SSL_new (SecurityUtils::getPTlsSslContext ());
 
         if (NULL == m_pSsl)
         {

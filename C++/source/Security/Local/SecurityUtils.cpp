@@ -13,9 +13,9 @@
 namespace WaveNs
 {
 
-SSL_CTX *SecurityUtils::getPSslContext ()
+SSL_CTX *SecurityUtils::getPTlsSslContext ()
 {
-    return (SecurityLocalObjectManager::getPSslContext ());
+    return (SecurityLocalObjectManager::getPTlsSslContext ());
 }
 
 int sslErrorCallback (const char *pErrorString, size_t length, void *pUserData)

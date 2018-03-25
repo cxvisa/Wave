@@ -17,8 +17,8 @@ class SecurityUtils
     private :
     protected :
     public :
-        static SSL_CTX *getPSslContext ();
-        static void     traceSslErrors ();
+        static SSL_CTX *getPTlsSslContext ();
+        static void     traceSslErrors    ();
 
         // Now the data members
 

@@ -36,12 +36,12 @@ class SecurityLocalObjectManager : public WaveLocalObjectManager
         static string                      getServiceName ();
         static SecurityLocalObjectManager *getInstance    ();
 
-        static SSL_CTX                    *getPSslContext ();
+        static SSL_CTX                    *getPTlsSslContext ();
 
         // Now the data members
 
     private:
-        SSL_CTX *m_pSslContext;
+        SSL_CTX *m_pTlsSslContext;
 
     protected:
     public:
