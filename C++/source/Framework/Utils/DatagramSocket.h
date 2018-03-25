@@ -29,6 +29,11 @@ class DatagramSocket
                 bool   isSecurityEnabled ();
                 SSL   *getPSsl           ();
 
+                bool   accept            ();
+
+        virtual bool   send              (sockaddr *pSockAddr, const string &data);
+
+
         // Now the data members.
 
     private :

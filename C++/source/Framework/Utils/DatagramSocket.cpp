@@ -96,4 +96,46 @@ SSL *DatagramSocket::getPSsl ()
     return (m_pSsl);
 }
 
+bool DatagramSocket::accept ()
+{
+    if (true == (isValid ()))
+    {
+        if (true == isSecurityEnabled ())
+        {
+            if (0 >= (SSL_accept (m_pSsl)))
+            {
+                SecurityUtils::traceSslErrors ();
+                return (false);
+            }
+        }
+
+        return (true);
+    }
+    else
+    {
+        return (false);
+    }
+}
+
+bool DatagramSocket::send (sockaddr *pSockAddr, const string &data)
+{
+    if (! (isValid ()))
+    {
+        return false;
+    }
+
+    SI32 status = sendto (m_socket, data.c_str (), data.length (), 0, pSockAddr, sizeof (*pSockAddr));
+
+    if (0 > status)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "DatagramSocket::send : Sending string data failed : Errno : %d\n", errno);
+
+        return (false);
+    }
+    else
+    {
+        return (true);
+    }
+}
+
 }

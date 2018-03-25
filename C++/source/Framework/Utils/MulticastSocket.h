@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -18,13 +18,11 @@ class MulticastSocket : public DatagramSocket
     private :
     protected :
     public :
-         MulticastSocket ();
-        virtual ~MulticastSocket ();
+                      MulticastSocket        ();
+        virtual      ~MulticastSocket        ();
 
-        bool setMulticastLoopback   ();
-        bool clearMulticastLoopback ();
-
-        virtual bool send (sockaddr *pSockAddr, const string &data);
+                bool  setMulticastLoopback   ();
+                bool  clearMulticastLoopback ();
 
         // Now the data members.
 
