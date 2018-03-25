@@ -9,6 +9,8 @@
 
 #include "Framework/Types/Types.h"
 
+#include <openssl/ssl.h>
+
 namespace WaveNs
 {
 
@@ -17,16 +19,23 @@ class DatagramSocket
     private :
     protected :
     public :
-         DatagramSocket ();
-        virtual ~DatagramSocket ();
+                      DatagramSocket     ();
+        virtual      ~DatagramSocket     ();
 
-        bool isValid ();
+                bool   isValid           ();
+
+                void   enableSecurity    ();
+                void   disableSecurity   ();
+                bool   isSecurityEnabled ();
+                SSL   *getPSsl           ();
 
         // Now the data members.
 
     private :
     protected :
-        SI32 m_socket;
+        SI32  m_socket;
+
+        SSL  *m_pSsl;
 
     public :
 };

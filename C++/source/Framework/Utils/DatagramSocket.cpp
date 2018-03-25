@@ -7,6 +7,7 @@
 #include "Framework/Utils/DatagramSocket.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
+#include "Security/Local/SecurityUtils.h"
 
 #include <errno.h>
 
@@ -34,6 +35,15 @@ DatagramSocket::DatagramSocket ()
 
 DatagramSocket::~DatagramSocket ()
 {
+    if (true == (isValid ()))
+    {
+        if (true == (isSecurityEnabled ()))
+        {
+            disableSecurity ();
+        }
+
+        waveCloseSocket (m_socket);
+    }
 }
 
 bool DatagramSocket::isValid ()
@@ -46,6 +56,44 @@ bool DatagramSocket::isValid ()
     {
         return (false);
     }
+}
+
+void DatagramSocket::enableSecurity ()
+{
+    if (true == (isValid ()))
+    {
+        m_pSsl = SSL_new (SecurityUtils::getPDtlsSslContext ());
+
+        if (NULL == m_pSsl)
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
+
+        if (0 >= (SSL_set_fd (m_pSsl, m_socket)))
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
+    }
+}
+
+void DatagramSocket::disableSecurity ()
+{
+    if (NULL != m_pSsl)
+    {
+        SSL_free (m_pSsl);
+    }
+}
+
+bool DatagramSocket::isSecurityEnabled ()
+{
+    return (NULL != m_pSsl);
+}
+
+SSL *DatagramSocket::getPSsl ()
+{
+    return (m_pSsl);
 }
 
 }

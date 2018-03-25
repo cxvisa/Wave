@@ -406,6 +406,7 @@ void StreamingSocketBase::disableSecurity ()
     if (NULL != m_pSsl)
     {
         SSL_free (m_pSsl);
+        m_pSsl = NULL;
     }
 }
 
