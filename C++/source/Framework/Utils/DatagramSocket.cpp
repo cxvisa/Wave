@@ -16,7 +16,9 @@ namespace WaveNs
 {
 
 DatagramSocket::DatagramSocket ()
-    : m_pSsl (NULL)
+    : m_pSsl        (NULL),
+      m_isAccepted  (false),
+      m_isConnected (false)
 {
     m_socket = ::socket (PF_INET, SOCK_DGRAM, 0);
 
@@ -110,6 +112,31 @@ bool DatagramSocket::accept ()
                 return (false);
             }
         }
+
+        setIsAccepted (true);
+
+        return (true);
+    }
+    else
+    {
+        return (false);
+    }
+}
+
+bool DatagramSocket::connect ()
+{
+    if (true == (isValid ()))
+    {
+        if (true == isSecurityEnabled ())
+        {
+            if (0 >= (SSL_connect (m_pSsl)))
+            {
+                SecurityUtils::traceSslErrors ();
+                return (false);
+            }
+        }
+
+        setIsConnected (true);
 
         return (true);
     }
@@ -286,6 +313,163 @@ SI32 DatagramSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength, s
     fromPort      = m_fromSocketAddres.sin_port;
 
     return (status);
+}
+
+bool DatagramSocket::receive (string &dataString)
+{
+    if (true != (isValid ()))
+    {
+        return (false);
+    }
+
+    char *pBuffer = new char[s_maximumDataLengthToReceive + 1];
+
+    SI32 status = 0;
+
+    if (true == isSecurityEnabled ())
+    {
+        status = SSL_read (getPSsl (), pBuffer, s_maximumDataLengthToReceive);
+    }
+    else
+    {
+        status = ::recv (m_socket, pBuffer, s_maximumDataLengthToReceive, 0);
+    }
+
+    dataString = "";
+
+    if (-1 == status)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "DatagramSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
+
+        delete[] pBuffer;
+        return (false);
+    }
+    else if (0 == status)
+    {
+        tracePrintf (TRACE_LEVEL_DEBUG, "DatagramSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
+
+        delete[] pBuffer;
+        return (true);
+    }
+    else
+    {
+        //pBuffer[status] = '\0';
+        dataString.assign (pBuffer, status);
+
+        delete[] pBuffer;
+        return (true);
+    }
+}
+
+SI32 DatagramSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength)
+{
+    if (true != (isValid ()))
+    {
+        return (false);
+    }
+
+    SI32 status = 0;
+
+    if (true == isSecurityEnabled ())
+    {
+        status = SSL_read (getPSsl (), (char *) pBuffer, maximumBufferLength);
+    }
+    else
+    {
+        status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0);
+    }
+
+    if (-1 == status)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "DatagramSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+    else if (0 == status)
+    {
+        tracePrintf (TRACE_LEVEL_DEBUG, "DatagramSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+
+    return (status);
+}
+
+SI32 DatagramSocket::send(UI8 *pBuffer, const UI32 maximumBufferLength)
+{
+    if (true != (isValid ()))
+    {
+        return (-1);
+    }
+
+    SI32  sendStatus = 0;
+    UI32  sendLen      = 0;
+
+    if (NULL != pBuffer)
+    {
+        while (sendLen < maximumBufferLength)
+        {
+            if (true == (isSecurityEnabled ()))
+            {
+                sendStatus = SSL_write (getPSsl (), (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen));
+            }
+            else
+            {
+                sendStatus = ::send (m_socket, (char *) (pBuffer +sendLen), (maximumBufferLength-sendLen), 0); //MSG_NOSIGNAL
+            }
+
+            tracePrintf (TRACE_LEVEL_DEVEL, "DatagramSocket::send(UI8 *pBuffer, const UI32 maximumBufferLength)Sen(Status %d, Len %d, Total %d)",sendStatus, sendLen, maximumBufferLength);
+
+            if (-1 == sendStatus)
+            {
+                return (sendStatus);
+            }
+
+            sendLen += sendStatus;
+
+            if (sendLen < maximumBufferLength)
+            {
+                tracePrintf (TRACE_LEVEL_WARN, "DatagramSocket::send(UI8 *pBuffer, const UI32 maximumBufferLength) Fragmented Send");
+            }
+        }
+    }
+
+    return (sendLen);
+}
+
+bool DatagramSocket::send (const string &dataString)
+{
+    if (true != (isValid ()))
+    {
+        return (-1);
+    }
+
+    SI32 sendStatus = 0;
+
+    sendStatus = send ((UI8*)(dataString.data ()), dataString.size ()); //MSG_NOSIGNAL
+
+    if (-1 == sendStatus)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "DatagramSocket::send (const string &dataString) : errno : %d", errno);
+    }
+
+    return (sendStatus != -1);
+}
+
+bool DatagramSocket::getIsAccepted () const
+{
+    return (m_isAccepted);
+}
+
+void DatagramSocket::setIsAccepted (const bool &isAccepted)
+{
+    m_isAccepted = isAccepted;
+}
+
+bool DatagramSocket::getIsConnected () const
+{
+    return (m_isConnected);
+}
+
+void DatagramSocket::setIsConnected (const bool &isConnected)
+{
+    m_isConnected = isConnected;
 }
 
 }

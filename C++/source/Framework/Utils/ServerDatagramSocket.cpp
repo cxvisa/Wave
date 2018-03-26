@@ -13,6 +13,7 @@ namespace WaveNs
 {
 
 ServerDatagramSocket::ServerDatagramSocket (const SI32 &port)
+    : DatagramSocket ()
 {
     sockaddr_in localSocket;
 
@@ -52,17 +53,13 @@ bool ServerDatagramSocket::accept ()
 
     if (0 < status)
     {
-        status = connect (m_socket, (const sockaddr *) &m_fromSocketAddres, m_fromSocketLength);
+        status = ::connect (m_socket, (const sockaddr *) &m_fromSocketAddres, m_fromSocketLength);
 
         if (0 == status)
         {
-            if (true == (isSecurityEnabled ()))
+            if (false == (DatagramSocket::accept ()))
             {
-                if (0 >= (SSL_accept (getPSsl ())))
-                {
-                    SecurityUtils::traceSslErrors ();
-                    return (false);
-                }
+                return (false);
             }
         }
         else

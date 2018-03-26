@@ -1,35 +1,33 @@
-/***************************************************************************
+/**************************************************************************
  *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef SERVERDATAGRAMSOCKET_H
-#define SERVERDATAGRAMSOCKET_H
+#ifndef CLIENTDATAGRAMSOCKET_H
+#define CLIENTDATAGRAMSOCKET_H
 
 #include "Framework/Utils/DatagramSocket.h"
 
 namespace WaveNs
 {
 
-class ServerDatagramSocket : public DatagramSocket
+class ClientDatagramSocket : public DatagramSocket
 {
     private :
     protected :
     public :
-                      ServerDatagramSocket (const SI32 &port);
-        virtual      ~ServerDatagramSocket ();
+                 ClientDatagramSocket (const string &ipAddress, const SI32 &port);
+        virtual ~ClientDatagramSocket ();
 
-                bool  accept               ();
+        bool connect ();
 
         // Now the data members
 
     private :
-
     protected :
     public :
 };
-
 }
 
-#endif // SERVERDATAGRAMSOCKET_H
+#endif // CLIENTDATAGRAMSOCKET_H

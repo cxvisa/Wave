@@ -4,6 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
+#include "Framework/Utils/ClientDatagramSocket.h"
+#include "Framework/Utils/ServerDatagramSocket.h"
 #include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -29,6 +31,8 @@ LightHouseReceiverObjectManager::LightHouseReceiverObjectManager ()
 
     addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::sendMessageToMulticastGroup),      "sendMessageToMulticastGroup");
     addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup), "receiveMessageFromMulticastGroup");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::clientDatagramTest),               "clientDatagramTest");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::serverDatagramTest),               "serverDatagramTest");
 }
 
 LightHouseReceiverObjectManager::~LightHouseReceiverObjectManager ()
@@ -168,6 +172,77 @@ UI32 LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup (UI32 arg
         else
         {
             WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup : Failed.");
+        }
+    }
+
+    return (0);
+}
+
+UI32 LightHouseReceiverObjectManager::clientDatagramTest (UI32 argc, vector<string> argv)
+{
+    if (argc >= 4)
+    {
+        string remoteIpAddress = argv[1];
+        SI32   remotePort      = atoi (argv[2].c_str ());
+        string messageToSend   = argv[3];
+
+        ClientDatagramSocket clientDatagramSocket (remoteIpAddress, remotePort);
+
+        bool isConnected = clientDatagramSocket.connect ();
+
+        if (true != isConnected)
+        {
+            WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::clientDatagramTest : Failed to connect.");
+        }
+        else
+        {
+            bool isSuccessful = clientDatagramSocket.send (messageToSend);
+
+            if (true == isSuccessful)
+            {
+                WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::clientDatagramTest : Successfully sent.");
+            }
+            else
+            {
+                WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::clientDatagramTest : Failed to send.");
+            }
+        }
+    }
+
+    return (0);
+}
+
+UI32 LightHouseReceiverObjectManager::serverDatagramTest (UI32 argc, vector<string> argv)
+{
+    if (argc >= 2)
+    {
+        SI32 localPort = atoi (argv[1].c_str ());
+
+        ServerDatagramSocket serverDatagramSocket (localPort);
+
+        bool isAccepted = serverDatagramSocket.accept ();
+
+        if (true != isAccepted)
+        {
+            WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::serverDatagramTest : Failed to accept.");
+        }
+        else
+        {
+            while (true)
+            {
+                string messageReceived;
+
+                bool isSuccessful = serverDatagramSocket.receive (messageReceived);
+
+                if (true == isSuccessful)
+                {
+                    WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::serverDatagramTest : Successfully received : " + messageReceived);
+                }
+                else
+                {
+                    WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::serverDatagramTest : Failed to receive.");
+                }
+            }
         }
     }
 
