@@ -82,7 +82,7 @@ int main (int argc, char *argv[])
 {
     char *pCommandLineArguments[64];
     int   i;
-    int   numberOfCommandLineArguments    = 25;
+    int   numberOfCommandLineArguments    = 32;
 
     for (i = 0; i < numberOfCommandLineArguments; i++)
     {
@@ -113,7 +113,14 @@ int main (int argc, char *argv[])
     strcpy (pCommandLineArguments[22], "/usr/WyserEa/bin/WyserEaCli");                 // Config file management client path
     strcpy (pCommandLineArguments[23], "/fabos/libexec/ConfigCmd.Linux.powerpc");   // Config file management ConfigCmd path
     strcpy (pCommandLineArguments[24], "/var/config/vcs/scripts");                  // Config file management scripts directory
-
+    strcpy (pCommandLineArguments[25], "0");
+    strcpy (pCommandLineArguments[26], "false"); 
+    strcpy (pCommandLineArguments[27], "auto");
+    strcpy (pCommandLineArguments[28], "75000");
+    strcpy (pCommandLineArguments[29], "0");
+    strcpy (pCommandLineArguments[30], "normal");
+    strcpy (pCommandLineArguments[31], "4301");
+    
     if (2 == argc)
     {
         if (0 == strcasecmp ("-help", argv[1]))
@@ -226,6 +233,10 @@ int main (int argc, char *argv[])
         else if (0 == strcasecmp ("-configfilemgmtscriptsdir",  argv[i]))
         {
             strcpy (pCommandLineArguments[24], argv[i + 1]);
+        }
+        else if (0 == strcasecmp ("-httpsport", argv[i]))
+        {
+            strcpy (pCommandLineArguments[31], argv[i + 1]);
         }
         else
         {

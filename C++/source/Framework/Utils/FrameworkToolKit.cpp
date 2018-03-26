@@ -2061,6 +2061,11 @@ SI32 FrameworkToolKit::getHttpsInterfaceReceiverPort ()
     return (s_httpsInterfaceReceiverPort);
 }
 
+void FrameworkToolKit::setHttpsInterfaceReceiverPort (const SI32 &httpsInterfaceRecieverPort)
+{
+    s_httpsInterfaceReceiverPort = httpsInterfaceRecieverPort;
+}
+
 SI32 FrameworkToolKit::getHaInterfaceReceiverPort ()
 {
     return (s_haInterfaceReceiverPort);

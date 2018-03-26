@@ -191,6 +191,7 @@ class FrameworkToolKit
         static      SI32                         getHttpInterfaceReceiverPort               ();
         static      SI32                         getHttpsInterfaceReceiverPort              ();
         static      void                         setHttpInterfaceReceiverPort               (const SI32 &httpInterfaceReceiverPort);
+        static      void                         setHttpsInterfaceReceiverPort              (const SI32 &httpsInterfaceReceiverPort);
         static      SI32                         getHaInterfaceReceiverPort                 ();
         static      void                         setHaInterfaceReceiverPort                 (const SI32 &haInterfaceReceiverPort);
 

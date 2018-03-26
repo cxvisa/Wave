@@ -15,6 +15,7 @@ namespace WaveNs
 {
 
 DatagramSocket::DatagramSocket ()
+    : m_pSsl (NULL)
 {
     m_socket = ::socket (PF_INET, SOCK_DGRAM, 0);
 

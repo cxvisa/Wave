@@ -37,6 +37,7 @@ extern "C" int waveMain (int argc, char *argv[])
     char                  *pChangeDirectoryToArray                      = new char[257];
     string                 detectSchemaChange                           = "true";
     SI32                   httpPort                                     = 2301;
+    SI32                   httpsPort                                    = 4301;
     SI32                   haPort                                       = 3516;
     SI32                   haPeerPort                                   = haPort;
     string                 handleDBCorruption                           = "true";
@@ -205,17 +206,17 @@ extern "C" int waveMain (int argc, char *argv[])
     }
 
     if (argc >= 25)
-    {   
+    {
         configFileManagementScriptsDirectory = argv[24];
     }
 
     if (argc >= 26)
-    {   
+    {
         firmwareDownloadCase = atoi(argv[25]);
     }
 
     if (argc >= 27)
-    {   
+    {
         if (0 == (strcmp (argv[26], "true")))
         {
             isAbruptReboot = true;
@@ -227,17 +228,17 @@ extern "C" int waveMain (int argc, char *argv[])
     }
 
     if (argc >= 28)
-    {   
+    {
         databaseEmptyType = argv[27];
     }
 
     if (argc >= 29)
-    {   
+    {
          databaseEmptyTypeAutoDetectionThresholdValue = atoi(argv[28]);
     }
-    
+
     if (argc >= 30)
-    {   
+    {
         haId = atoi(argv[29]);
     }
 
@@ -246,10 +247,15 @@ extern "C" int waveMain (int argc, char *argv[])
         startMode = argv[30];
     }
 
+    if (argc >= 32)
+    {
+        httpsPort = atoi (argv[31]);
+    }
+
     FrameworkToolKit::setDetectSchemaChange (detectSchemaChange);
-    
+
     FrameworkToolKit::setIsAbruptReboot (isAbruptReboot);
-    
+
     FrameworkToolKit::setFirmwareDownloadCase (firmwareDownloadCase);
 
     FrameworkToolKit::setHandleDBCorruptionFlag (handleDBCorruption);
@@ -259,6 +265,7 @@ extern "C" int waveMain (int argc, char *argv[])
     FrameworkToolKit::setManagementInterfaceClientReceiverPort (managementClientPort);
 
     FrameworkToolKit::setHttpInterfaceReceiverPort (httpPort);
+    FrameworkToolKit::setHttpsInterfaceReceiverPort (httpsPort);
 
     FrameworkToolKit::setHaInterfaceReceiverPort (haPort);
 
@@ -275,7 +282,7 @@ extern "C" int waveMain (int argc, char *argv[])
     ConfigFileManagementToolKit::setConfigFileManagementConfigCmdPath (configFileManagementConfigCmdPath);
 
     ConfigFileManagementToolKit::setConfigFileManagementScriptsDirectory (configFileManagementScriptsDirectory);
-    
+
     initializeWaveSocketLayer ();
 
     string ipAddress;
@@ -354,7 +361,7 @@ extern "C" int waveMainWithDefaults (char *programName)
 {
     int argc = 1;
     char **argv = (char **) malloc (sizeof (char *));
-    
+
     argv[0] = (char *) malloc (strlen (programName) + 1);
 
     strncpy (argv[0], programName, strlen (argv[0]) + 1);
