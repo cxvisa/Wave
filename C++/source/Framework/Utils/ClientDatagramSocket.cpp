@@ -4,6 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
+#include "Security/Local/SecurityUtils.h"
 #include "Framework/Utils/ClientDatagramSocket.h"
 #include "Framework/Utils/TraceUtils.h"
 
@@ -33,6 +34,26 @@ ClientDatagramSocket::ClientDatagramSocket (const string &ipAddress, const SI32 
 
 ClientDatagramSocket::~ClientDatagramSocket ()
 {
+}
+
+void ClientDatagramSocket::enableSecurity ()
+{
+    if (true == (isValid ()))
+    {
+        m_pSsl = SSL_new (SecurityUtils::getPDtlsClientSslContext ());
+
+        if (NULL == m_pSsl)
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
+
+        if (0 >= (SSL_set_fd (m_pSsl, m_socket)))
+        {
+            SecurityUtils::traceSslErrors ();
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
+        }
+    }
 }
 
 bool ClientDatagramSocket::connect ()

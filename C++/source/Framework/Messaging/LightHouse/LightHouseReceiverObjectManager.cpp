@@ -186,7 +186,10 @@ UI32 LightHouseReceiverObjectManager::clientDatagramTest (UI32 argc, vector<stri
         SI32   remotePort      = atoi (argv[2].c_str ());
         string messageToSend   = argv[3];
 
+
         ClientDatagramSocket clientDatagramSocket (remoteIpAddress, remotePort);
+
+        clientDatagramSocket.enableSecurity ();
 
         bool isConnected = clientDatagramSocket.connect ();
 
@@ -196,15 +199,18 @@ UI32 LightHouseReceiverObjectManager::clientDatagramTest (UI32 argc, vector<stri
         }
         else
         {
-            bool isSuccessful = clientDatagramSocket.send (messageToSend);
+            for (int i = 0; i < 10; i++)
+            {
+                bool isSuccessful = clientDatagramSocket.send (messageToSend);
 
-            if (true == isSuccessful)
-            {
-                WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::clientDatagramTest : Successfully sent.");
-            }
-            else
-            {
-                WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::clientDatagramTest : Failed to send.");
+                if (true == isSuccessful)
+                {
+                    WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::clientDatagramTest : Successfully sent.");
+                }
+                else
+                {
+                    WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::clientDatagramTest : Failed to send.");
+                }
             }
         }
     }
@@ -219,6 +225,8 @@ UI32 LightHouseReceiverObjectManager::serverDatagramTest (UI32 argc, vector<stri
         SI32 localPort = atoi (argv[1].c_str ());
 
         ServerDatagramSocket serverDatagramSocket (localPort);
+
+        serverDatagramSocket.enableSecurity ();
 
         bool isAccepted = serverDatagramSocket.accept ();
 

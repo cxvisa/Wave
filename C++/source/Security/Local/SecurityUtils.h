@@ -17,8 +17,10 @@ class SecurityUtils
     private :
     protected :
     public :
-        static SSL_CTX *getPTlsSslContext  ();
-        static SSL_CTX *getPDtlsSslContext ();
+        static SSL_CTX *getPTlsSslContext        ();
+
+        static SSL_CTX *getPDtlsSslContext       ();
+        static SSL_CTX *getPDtlsClientSslContext ();
 
         static void     traceSslErrors     ();
 

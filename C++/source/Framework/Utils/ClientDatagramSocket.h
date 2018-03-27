@@ -17,10 +17,12 @@ class ClientDatagramSocket : public DatagramSocket
     private :
     protected :
     public :
-                 ClientDatagramSocket (const string &ipAddress, const SI32 &port);
-        virtual ~ClientDatagramSocket ();
+                       ClientDatagramSocket (const string &ipAddress, const SI32 &port);
+        virtual       ~ClientDatagramSocket ();
 
-        bool connect ();
+        virtual void   enableSecurity       ();
+
+                bool   connect              ();
 
         // Now the data members
 

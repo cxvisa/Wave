@@ -23,6 +23,11 @@ SSL_CTX *SecurityUtils::getPDtlsSslContext ()
     return (SecurityLocalObjectManager::getPDtlsSslContext ());
 }
 
+SSL_CTX *SecurityUtils::getPDtlsClientSslContext ()
+{
+    return (SecurityLocalObjectManager::getPDtlsClientSslContext ());
+}
+
 int sslErrorCallback (const char *pErrorString, size_t length, void *pUserData)
 {
     WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "%s", pErrorString);

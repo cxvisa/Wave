@@ -21,15 +21,16 @@ class WaveLinearSequencerContext;
 class SecurityLocalObjectManager : public WaveLocalObjectManager
 {
     private:
-             SecurityLocalObjectManager            ();
+             SecurityLocalObjectManager                  ();
 
-        void initialize                            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+        void initialize                                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-        void initializeSslLibraryStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeServerContextStep           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeLoadCertificatesForTlsStep  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeLoadCertificatesForDtlsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void initializeSetPeerValidationStep       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeSslLibraryStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeServerContextStep                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesForTlsStep        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesForDtlsStep       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeLoadCertificatesForDtlsClientStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void initializeSetPeerValidationStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected:
     public:
@@ -38,14 +39,18 @@ class SecurityLocalObjectManager : public WaveLocalObjectManager
         static string                      getServiceName ();
         static SecurityLocalObjectManager *getInstance    ();
 
-        static SSL_CTX                    *getPTlsSslContext  ();
-        static SSL_CTX                    *getPDtlsSslContext ();
+        static SSL_CTX                    *getPTlsSslContext        ();
+
+        static SSL_CTX                    *getPDtlsSslContext       ();
+        static SSL_CTX                    *getPDtlsClientSslContext ();
 
         // Now the data members
 
     private:
         SSL_CTX *m_pTlsSslContext;
+
         SSL_CTX *m_pDtlsSslContext;
+        SSL_CTX *m_pDtlsClientSslContext;
 
     protected:
     public:

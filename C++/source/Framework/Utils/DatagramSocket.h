@@ -26,7 +26,7 @@ class DatagramSocket
 
                 bool   isValid           ();
 
-                void   enableSecurity    ();
+        virtual void   enableSecurity    ();
                 void   disableSecurity   ();
                 bool   isSecurityEnabled ();
                 SSL   *getPSsl           ();

@@ -16,8 +16,9 @@ namespace WaveNs
 
 SecurityLocalObjectManager::SecurityLocalObjectManager ()
         : WaveLocalObjectManager (getServiceName ()),
-          m_pTlsSslContext       (NULL),
-          m_pDtlsSslContext      (NULL)
+          m_pTlsSslContext        (NULL),
+          m_pDtlsSslContext       (NULL),
+          m_pDtlsClientSslContext (NULL)
 {
 }
 
@@ -52,6 +53,7 @@ void SecurityLocalObjectManager::initialize (WaveAsynchronousContextForBootPhase
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeServerContextStep),
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeLoadCertificatesForTlsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeLoadCertificatesForDtlsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeLoadCertificatesForDtlsClientStep),
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::initializeSetPeerValidationStep),
 
         reinterpret_cast<WaveLinearSequencerStep> (&SecurityLocalObjectManager::waveLinearSequencerSucceededStep),
@@ -80,6 +82,8 @@ void SecurityLocalObjectManager::initializeServerContextStep (WaveLinearSequence
 {
     trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeServerContextStep : Entering ...");
 
+    // TLS Server Context
+
     const SSL_METHOD *pTlsSslMethod = TLS_server_method ();
 
     SSL_CTX *pTlsSslContext = SSL_CTX_new (pTlsSslMethod);
@@ -92,6 +96,9 @@ void SecurityLocalObjectManager::initializeServerContextStep (WaveLinearSequence
 
     m_pTlsSslContext = pTlsSslContext;
 
+
+    // DTLS Server Context
+
     const SSL_METHOD *pDtlsSslMethod = DTLS_server_method ();
 
     SSL_CTX *pDtlsSslContext = SSL_CTX_new (pDtlsSslMethod);
@@ -103,6 +110,20 @@ void SecurityLocalObjectManager::initializeServerContextStep (WaveLinearSequence
     }
 
     m_pDtlsSslContext = pDtlsSslContext;
+
+    // DTLS Client Context
+
+    const SSL_METHOD *pDtlsClientSslMethod = DTLS_client_method ();
+
+    SSL_CTX *pDtlsClientSslContext = SSL_CTX_new (pDtlsClientSslMethod);
+
+    if (NULL == pDtlsClientSslContext)
+    {
+        SecurityUtils::traceSslErrors ();
+        waveAssert (false, __FILE__, __LINE__);
+    }
+
+    m_pDtlsClientSslContext = pDtlsClientSslContext;
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
@@ -179,6 +200,43 @@ void SecurityLocalObjectManager::initializeLoadCertificatesForDtlsStep (WaveLine
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
 }
+
+void SecurityLocalObjectManager::initializeLoadCertificatesForDtlsClientStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
+{
+    trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeLoadCertificatesForDtlsClientStep : Entering ...");
+
+    if (0 >= (SSL_CTX_use_certificate_file (m_pDtlsClientSslContext, "pki/client-public-private.pem", SSL_FILETYPE_PEM)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (0 >= (SSL_CTX_use_PrivateKey_file (m_pDtlsClientSslContext, "pki/client-public-private.pem", SSL_FILETYPE_PEM)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (false == (SSL_CTX_check_private_key (m_pDtlsClientSslContext)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    if (false == (SSL_CTX_load_verify_locations (m_pDtlsClientSslContext, "pki/cacert.pem", NULL)))
+    {
+        SecurityUtils::traceSslErrors ();
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
+}
+
 int sslVerifyCallback (int preVerifyOk, X509_STORE_CTX *pX509Context)
 {
     if (0 == preVerifyOk)
@@ -221,8 +279,10 @@ void SecurityLocalObjectManager::initializeSetPeerValidationStep (WaveLinearSequ
 {
     trace (TRACE_LEVEL_DEVEL, "SecurityLocalObjectManager::initializeSetPeerValidationStep : Entering ...");
 
-    SSL_CTX_set_verify (m_pTlsSslContext,  SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
-    SSL_CTX_set_verify (m_pDtlsSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
+    SSL_CTX_set_verify (m_pTlsSslContext,       SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
+
+    SSL_CTX_set_verify (m_pDtlsSslContext,       SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
+    SSL_CTX_set_verify (m_pDtlsClientSslContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, sslVerifyCallback);
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
@@ -236,6 +296,11 @@ SSL_CTX *SecurityLocalObjectManager::getPTlsSslContext ()
 SSL_CTX *SecurityLocalObjectManager::getPDtlsSslContext ()
 {
     return ((getInstance ())->m_pDtlsSslContext);
+}
+
+SSL_CTX *SecurityLocalObjectManager::getPDtlsClientSslContext ()
+{
+    return ((getInstance ())->m_pDtlsClientSslContext);
 }
 
 }
