@@ -178,7 +178,10 @@ UI32 LightHouseTestObjectManager1::secureClientDatagramTest (UI32 argc, vector<s
 
         for (int i = 0; i < numberOfClients; i++)
         {
-            WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "LightHouseTestObjectManager1::secureClientDatagramTest : Iteration %u\n", i);
+            if (0 == (i % 100))
+            {
+                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "LightHouseTestObjectManager1::secureClientDatagramTest : Iteration %u\n", i);
+            }
 
             ClientDatagramSocket clientDatagramSocket (remoteIpAddress, remotePort);
 
