@@ -21,42 +21,43 @@ class DatagramSocket
     private :
     protected :
     public :
-                                 DatagramSocket         ();
-        virtual                 ~DatagramSocket         ();
+                                 DatagramSocket           ();
+        virtual                 ~DatagramSocket           ();
 
-                bool             isValid               ();
+                bool             isValid                 ();
 
-        virtual void             enableSecurity        ();
-                void             disableSecurity       ();
-                bool             isSecurityEnabled     ();
-                SSL             *getPSsl               ();
+        virtual void             enableSecurity          ();
+                void             disableSecurity         ();
+                bool             isSecurityEnabled       ();
+                SSL             *getPSsl                 ();
 
-        virtual bool             accept                ();
-        virtual bool             connect               ();
+        virtual bool             accept                  ();
+        virtual bool             connect                 ();
+                bool             connectUnderlyingSocket ();
 
-        virtual bool             getIsAccepted         () const;
-                void             setIsAccepted         (const bool &isAccepted);
+        virtual bool             getIsAccepted           () const;
+                void             setIsAccepted           (const bool &isAccepted);
 
-                bool             getIsConnected        () const;
-                void             setIsConnected        (const bool &isConnected);
+                bool             getIsConnected          () const;
+                void             setIsConnected          (const bool &isConnected);
 
-        virtual bool             send                  (sockaddr *pSockAddr, const string &data);
+        virtual bool             send                    (sockaddr *pSockAddr, const string &data);
 
-        virtual bool             receive               (string &dataString, string &fromIpAddress, SI32 &fromPort);
-        virtual SI32             receive               (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort);
-        virtual SI32             receive               (FixedSizeBuffer * const pFixedSizeBuffer, string &fromIpAddress, SI32 &fromPort);
-        virtual SI32             receiveAll            (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort);
+        virtual bool             receive                 (string &dataString, string &fromIpAddress, SI32 &fromPort);
+        virtual SI32             receive                 (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort);
+        virtual SI32             receive                 (FixedSizeBuffer * const pFixedSizeBuffer, string &fromIpAddress, SI32 &fromPort);
+        virtual SI32             receiveAll              (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort);
 
-        virtual SI32             receive               (UI8 *pBuffer, const UI32 maximumBufferLength);
-        virtual bool             receive               (string &dataString);
+        virtual SI32             receive                 (UI8 *pBuffer, const UI32 maximumBufferLength);
+        virtual bool             receive                 (string &dataString);
 
-        virtual SI32             send                  (UI8 *pBuffer, const UI32 maximumBufferLength);
-        virtual bool             send                  (const string &dataString);
+        virtual SI32             send                    (UI8 *pBuffer, const UI32 maximumBufferLength);
+        virtual bool             send                    (const string &dataString);
 
-                bool             setNonBlocking        ();
-                bool             clearNonBlocking      ();
+                bool             setNonBlocking          ();
+                bool             clearNonBlocking        ();
 
-                ReadReadyStatus  isDataAvailableToRead (const UI32 &milliSecondsToWaitFor = 1000);
+                ReadReadyStatus  isDataAvailableToRead   (const UI32 &milliSecondsToWaitFor = 1000);
 
         // Now the data members.
 

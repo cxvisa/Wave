@@ -49,43 +49,5 @@ ServerDatagramSocket::~ServerDatagramSocket ()
 {
 }
 
-bool ServerDatagramSocket::connectUnderlyingSocket ()
-{
-    char *pBuffer = new char[100];
-
-    SI32 status = recvfrom (m_socket, pBuffer, 100, MSG_PEEK, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
-
-    delete[] pBuffer;
-
-    if (0 > status)
-    {
-        //cout << "1 *** errno = " << errno << " ***\n";
-        return (false);
-    }
-
-    if (0 < status)
-    {
-        status = ::connect (m_socket, (const sockaddr *) &m_fromSocketAddres, m_fromSocketLength);
-
-        if (0 == status)
-        {
-            return (true);
-        }
-        else
-        {
-            //cout << "3 *** errno = " << errno << " ***\n";
-            return (false);
-        }
-    }
-    else
-    {
-        //cout << "4 *** errno = " << errno << " ***\n";
-
-        return (false);
-    }
-
-    return (true);
-}
-
 }
 
