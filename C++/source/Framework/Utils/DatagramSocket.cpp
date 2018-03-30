@@ -573,6 +573,48 @@ ReadReadyStatus DatagramSocket::isDataAvailableToRead (const UI32 &milliSecondsT
     }
 }
 
+WriteReadyStatus DatagramSocket::isAvailableToWriteData (const UI32 &milliSecondsToWaitFor)
+{
+    if (! (isValid ()))
+    {
+        return (WRITE_READY_INVALID_SOCKET);
+    }
+
+    struct timeval timeOut;
+           fd_set  fdSet;
+
+    timeOut.tv_sec = milliSecondsToWaitFor / 1000;
+    timeOut.tv_usec = (milliSecondsToWaitFor % 1000) * 1000;
+
+    while (true)
+    {
+        FD_ZERO (&fdSet);
+        FD_SET  (m_socket, &fdSet);
+
+        SI32 status = select (m_socket + 1, NULL, &fdSet, NULL, &timeOut);
+
+        if (0 < status)
+        {
+            return (WRITE_READY_READY);
+        }
+        else if (0 == status)
+        {
+            return (WRITE_READY_TIMEOUT);
+        }
+        else
+        {
+            if (EINTR == errno)
+            {
+                continue;
+            }
+            else
+            {
+                return (WRITE_READY_FATAL_ERROR);
+            }
+        }
+    }
+}
+
 bool DatagramSocket::connectUnderlyingSocket ()
 {
     char *pBuffer = new char[100];

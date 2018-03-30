@@ -9,4 +9,11 @@
           <Resource Name = "READ_READY_TIMEOUT">Timed out</Resource>
           <Resource Name = "READ_READY_FATAL_ERROR">Fatal error</Resource>
      </ResourceEnum>
+
+     <ResourceEnum Name = "WriteReadyStatus">
+          <Resource Name = "WRITE_READY_INVALID_SOCKET">Invlid Socket</Resource>
+          <Resource Name = "WRITE_READY_READY">Ready to Write</Resource>
+          <Resource Name = "WRITE_READY_TIMEOUT">Timed out</Resource>
+          <Resource Name = "WRITE_READY_FATAL_ERROR">Fatal error</Resource>
+     </ResourceEnum>
 </ModuleResources>

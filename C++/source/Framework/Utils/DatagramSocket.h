@@ -58,6 +58,7 @@ class DatagramSocket
                 bool             clearNonBlocking        ();
 
                 ReadReadyStatus  isDataAvailableToRead   (const UI32 &milliSecondsToWaitFor = 1000);
+                WriteReadyStatus isAvailableToWriteData  (const UI32 &milliSecondsToWaitFor = 1000);
 
         // Now the data members.
 
