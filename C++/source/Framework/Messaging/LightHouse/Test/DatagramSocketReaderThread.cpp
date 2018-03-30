@@ -88,7 +88,7 @@ WaveThreadStatus DatagramSocketReaderThread::start ()
 
         if (true == isSuccessful)
         {
-            WaveNs::trace (TRACE_LEVEL_SUCCESS, "DatagramSocketReaderThread::serverDatagramTest : Successfully received : " + messageReceived);
+            WaveNs::trace (TRACE_LEVEL_DEBUG, "DatagramSocketReaderThread::serverDatagramTest : Successfully received : " + messageReceived);
 
             if (messageReceived.empty())
             {

@@ -119,7 +119,7 @@ UI32 LightHouseTestObjectManager1::clientDatagramTest (UI32 argc, vector<string>
 
                     if (true == isSuccessful)
                     {
-                        WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseTestObjectManager1::clientDatagramTest : Successfully sent.");
+                        WaveNs::trace (TRACE_LEVEL_DEBUG, "LightHouseTestObjectManager1::clientDatagramTest : Successfully sent.");
                     }
                     else
                     {
@@ -191,7 +191,7 @@ UI32 LightHouseTestObjectManager1::secureClientDatagramTest (UI32 argc, vector<s
 
                     if (true == isSuccessful)
                     {
-                        WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseTestObjectManager1::secureClientDatagramTest : Successfully sent.");
+                        WaveNs::trace (TRACE_LEVEL_DEBUG, "LightHouseTestObjectManager1::secureClientDatagramTest : Successfully sent.");
                     }
                     else
                     {
