@@ -409,7 +409,10 @@ void StreamingSocketBase::disableSecurity ()
 {
     if (NULL != m_pSsl)
     {
-        SSL_free (m_pSsl);
+        SSL_set_fd   (m_pSsl, 0);
+        SSL_shutdown (m_pSsl);
+        SSL_free     (m_pSsl);
+
         m_pSsl = NULL;
     }
 }

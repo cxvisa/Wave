@@ -22,7 +22,7 @@ class ClientDatagramSocket : public DatagramSocket
 
         virtual void   enableSecurity       ();
 
-                bool   connect              ();
+        virtual bool   connect              ();
 
         // Now the data members
 

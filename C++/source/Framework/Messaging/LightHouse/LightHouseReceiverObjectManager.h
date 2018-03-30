@@ -34,9 +34,6 @@ class LightHouseReceiverObjectManager : public WaveLocalObjectManagerForUserSpec
         static UI32 sendMessageToMulticastGroup              (UI32 argc, vector<string> argv);
         static UI32 receiveMessageFromMulticastGroup         (UI32 argc, vector<string> argv);
 
-        static UI32 clientDatagramTest                       (UI32 argc, vector<string> argv);
-        static UI32 serverDatagramTest                       (UI32 argc, vector<string> argv);
-
     protected :
     public :
         virtual                                 ~LightHouseReceiverObjectManager ();

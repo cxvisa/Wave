@@ -2,7 +2,7 @@
 
 <!-- This file contains the resources for Wave Framework Map/Reduce Module -->
 
-<ModuleResources ModuleName = "ExternalServiceSharding" ComponentName = "Wave">
+<ModuleResources ModuleName = "MapReduce" ComponentName = "Wave">
      <ResourceEnum Name = "MapReduceMessageType">
           <Resource Name = "MAP_REDUCE_MESSAGE_TYPE_READY">Worker Ready</Resource>
           <Resource Name = "MAP_REDUCE_MESSAGE_TYPE_DELEGATE">Manager Delegate</Resource>

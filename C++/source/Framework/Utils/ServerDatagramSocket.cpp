@@ -4,13 +4,24 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include <Security/Local/SecurityUtils.h>
+#include "Security/Local/SecurityUtils.h"
 #include "Framework/Utils/ServerDatagramSocket.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 
+#include <sys/types.h>
+#include <openssl/bio.h>
+
 namespace WaveNs
 {
+
+ServerDatagramSocket::ServerDatagramSocket ()
+    : DatagramSocket ()
+{
+    sockaddr_in localSocket;
+
+    memset((char *) &localSocket, 0, sizeof(localSocket));
+}
 
 ServerDatagramSocket::ServerDatagramSocket (const SI32 &port)
     : DatagramSocket ()
@@ -38,16 +49,17 @@ ServerDatagramSocket::~ServerDatagramSocket ()
 {
 }
 
-bool ServerDatagramSocket::accept ()
+bool ServerDatagramSocket::connect ()
 {
-    char *pBuffer = new char[s_maximumDataLengthToReceive];
+    char *pBuffer = new char[100];
 
-    SI32 status = recvfrom (m_socket, pBuffer, s_maximumDataLengthToReceive, MSG_PEEK, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
+    SI32 status = recvfrom (m_socket, pBuffer, 100, MSG_PEEK, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
 
-    delete pBuffer;
+    delete[] pBuffer;
 
     if (0 > status)
     {
+        //cout << "1 *** errno = " << errno << " ***\n";
         return (false);
     }
 
@@ -57,18 +69,18 @@ bool ServerDatagramSocket::accept ()
 
         if (0 == status)
         {
-            if (false == (DatagramSocket::accept ()))
-            {
-                return (false);
-            }
+            return (true);
         }
         else
         {
+            //cout << "3 *** errno = " << errno << " ***\n";
             return (false);
         }
     }
     else
     {
+        //cout << "4 *** errno = " << errno << " ***\n";
+
         return (false);
     }
 

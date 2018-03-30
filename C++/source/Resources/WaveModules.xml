@@ -33,4 +33,5 @@
     <Module Name = "FrameworkMessagingBrokerBasedMessagignBus"   Source = "WaveFrameworkMessagingBrokerBasedMessagingBus.xml" ></Module>
     <Module Name = "ExternalServiceSharding"                     Source = "ExternalServiceSharding.xml"                       ></Module>
     <Module Name = "MapReduce"                                   Source = "MapReduce.xml"                                     ></Module>
+    <Module Name = "Socket"                                      Source = "Socket.xml"                                        ></Module>
 </Modules>

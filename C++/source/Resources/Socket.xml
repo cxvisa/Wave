@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains the resources for Wave Framework Map/Reduce Module -->
+
+<ModuleResources ModuleName = "Socket" ComponentName = "Wave">
+     <ResourceEnum Name = "ReadReadyStatus">
+          <Resource Name = "READ_READY_INVALID_SOCKET">Invlid Socket</Resource>
+          <Resource Name = "READ_READY_READY">Ready to Read</Resource>
+          <Resource Name = "READ_READY_TIMEOUT">Timed out</Resource>
+          <Resource Name = "READ_READY_FATAL_ERROR">Fatal error</Resource>
+     </ResourceEnum>
+</ModuleResources>

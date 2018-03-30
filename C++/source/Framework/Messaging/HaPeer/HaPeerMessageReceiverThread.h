@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2011 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2018 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
- *   Author : Vipool Prajapati                                    *
+ *   Author : Vidyasagara Guntaka                                          *
  ***************************************************************************/
 
 #ifndef HAPEERMESSAGERECEIVERTHREAD_H
@@ -40,7 +40,7 @@ class HaPeerMessageReceiverThread : public WavePosixThread
         SI32                   m_peerServerPort;
         string                 m_peerServerMessageVersion;
         UI8                    m_peerServerSerializationType;
-        WaveMutex             m_peerServerMutex;
+        WaveMutex              m_peerServerMutex;
 
     protected :
     public :

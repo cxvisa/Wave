@@ -11,6 +11,10 @@
 #include "Framework/Utils/FixedSizeBuffer.h"
 
 #include <errno.h>
+#include <fcntl.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace WaveNs
 {
@@ -35,6 +39,9 @@ DatagramSocket::DatagramSocket ()
         tracePrintf (TRACE_LEVEL_FATAL, "DatagramSocket::DatagramSocket : %d\n", errno);
         waveAssert (false, __FILE__, __LINE__);
     }
+
+    memset((char *) &m_fromSocketAddres, 0, sizeof(m_fromSocketAddres));
+    m_fromSocketLength = sizeof (m_fromSocketAddres);
 }
 
 DatagramSocket::~DatagramSocket ()
@@ -86,7 +93,11 @@ void DatagramSocket::disableSecurity ()
 {
     if (NULL != m_pSsl)
     {
-        SSL_free (m_pSsl);
+        //SSL_set_fd   (m_pSsl, 0);
+        SSL_shutdown (m_pSsl);
+        SSL_free     (m_pSsl);
+
+        m_pSsl = NULL;
     }
 }
 
@@ -470,6 +481,96 @@ bool DatagramSocket::getIsConnected () const
 void DatagramSocket::setIsConnected (const bool &isConnected)
 {
     m_isConnected = isConnected;
+}
+
+bool DatagramSocket::setNonBlocking ()
+{
+    if (! (isValid ()))
+    {
+        return (false);
+    }
+
+    int flags = fcntl (m_socket, F_GETFL, 0);
+
+    if (flags < 0)
+    {
+        return (false);
+    }
+
+    flags = fcntl (m_socket, F_SETFL, flags | O_NONBLOCK);
+
+    if (flags < 0)
+    {
+        return (false);
+    }
+
+    return (true);
+}
+
+bool DatagramSocket::clearNonBlocking ()
+{
+    if (! (isValid ()))
+    {
+        return (false);
+    }
+
+    int flags = fcntl (m_socket, F_GETFL, 0);
+
+    if (flags < 0)
+    {
+        return (false);
+    }
+
+    flags = fcntl (m_socket, F_SETFL, flags & (~O_NONBLOCK));
+
+    if (flags < 0)
+    {
+        return (false);
+    }
+
+    return (true);
+}
+
+ReadReadyStatus DatagramSocket::isDataAvailableToRead (const UI32 &milliSecondsToWaitFor)
+{
+    if (! (isValid ()))
+    {
+        return (READ_READY_INVALID_SOCKET);
+    }
+
+    struct timeval timeOut;
+           fd_set  fdSet;
+
+    timeOut.tv_sec = milliSecondsToWaitFor / 1000;
+    timeOut.tv_usec = (milliSecondsToWaitFor % 1000) * 1000;
+
+    while (true)
+    {
+        FD_ZERO (&fdSet);
+        FD_SET  (m_socket, &fdSet);
+
+        SI32 status = select (m_socket + 1, &fdSet, NULL, NULL, &timeOut);
+
+        if (0 < status)
+        {
+            return (READ_READY_READY);
+        }
+        else if (0 == status)
+        {
+            return (READ_READY_TIMEOUT);
+        }
+        else
+        {
+            if (EINTR == errno)
+            {
+                continue;
+            }
+            else
+            {
+                return (READ_READY_FATAL_ERROR);
+            }
+        }
+    }
 }
 
 }

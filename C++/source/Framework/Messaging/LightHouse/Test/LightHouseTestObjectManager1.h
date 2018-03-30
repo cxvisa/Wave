@@ -24,6 +24,13 @@ class LightHouseTestObjectManager1 : public WaveTestObjectManager
 
         void broadcastTestLightPulse1TestStep (LightHouseTestContext *pLightHouseTestContext);
 
+
+        static UI32 clientDatagramTest        (UI32 argc, vector<string> argv);
+        static UI32 serverDatagramTest        (UI32 argc, vector<string> argv);
+
+        static UI32 secureClientDatagramTest  (UI32 argc, vector<string> argv);
+        static UI32 secureServerDatagramTest  (UI32 argc, vector<string> argv);
+
     protected :
     public :
         virtual                             ~LightHouseTestObjectManager1 ();
