@@ -33,33 +33,40 @@ WaveThreadStatus DatagramSocketReaderThread::start ()
     m_pServerDatagramSocket->setNonBlocking ();
 
     const UI32 maxNumberOfSecureSocketAcceptAttemps = 10;
-          UI32 attemptCount                      = 0;
-          bool isAccepted                        = false;
+          UI32 attemptCount                         = 0;
+          bool isAccepted                           = false;
 
-    while (attemptCount < maxNumberOfSecureSocketAcceptAttemps)
+    if (true == (m_pServerDatagramSocket->isSecurityEnabled ()))
     {
-        readReadyStatus = m_pServerDatagramSocket->isDataAvailableToRead ();
+        while (attemptCount < maxNumberOfSecureSocketAcceptAttemps)
+        {
+            readReadyStatus = m_pServerDatagramSocket->isDataAvailableToRead ();
 
-        if (READ_READY_FATAL_ERROR == readReadyStatus)
-        {
-            break;
-        }
-        else if (READ_READY_TIMEOUT == readReadyStatus)
-        {
-            attemptCount++;
-            continue;
-        }
+            if (READ_READY_FATAL_ERROR == readReadyStatus)
+            {
+                break;
+            }
+            else if (READ_READY_TIMEOUT == readReadyStatus)
+            {
+                attemptCount++;
+                continue;
+            }
 
-        isAccepted = m_pServerDatagramSocket->accept ();
+            isAccepted = m_pServerDatagramSocket->accept ();
 
-        if (true == isAccepted)
-        {
-            break;
+            if (true == isAccepted)
+            {
+                break;
+            }
+            else
+            {
+                attemptCount++;
+            }
         }
-        else
-        {
-            attemptCount++;
-        }
+    }
+    else
+    {
+        isAccepted = true;
     }
 
     if (! isAccepted)

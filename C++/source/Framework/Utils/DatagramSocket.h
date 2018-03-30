@@ -33,7 +33,7 @@ class DatagramSocket
 
         virtual bool             accept                  ();
         virtual bool             connect                 ();
-                bool             connectUnderlyingSocket ();
+                bool             connectUnderlyingSocketBasedOnIncomingDatagram ();
 
         virtual bool             getIsAccepted           () const;
                 void             setIsAccepted           (const bool &isAccepted);

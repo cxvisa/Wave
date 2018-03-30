@@ -38,34 +38,103 @@ ClientDatagramSocket::~ClientDatagramSocket ()
 
 void ClientDatagramSocket::enableSecurity ()
 {
-    if (true == (isValid ()))
+    if (false == (isValid ()))
     {
-        m_pSsl = SSL_new (SecurityUtils::getPDtlsClientSslContext ());
+        return;
+    }
 
-        if (NULL == m_pSsl)
-        {
-            SecurityUtils::traceSslErrors ();
-            WaveNs::waveAssert (false, __FILE__, __LINE__);
-        }
+    m_pSsl = SSL_new (SecurityUtils::getPDtlsClientSslContext ());
 
-        if (0 >= (SSL_set_fd (m_pSsl, m_socket)))
-        {
-            SecurityUtils::traceSslErrors ();
-            WaveNs::waveAssert (false, __FILE__, __LINE__);
-        }
+    if (NULL == m_pSsl)
+    {
+        SecurityUtils::traceSslErrors ();
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
+    }
+
+    if (0 >= (SSL_set_fd (m_pSsl, m_socket)))
+    {
+        SecurityUtils::traceSslErrors ();
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 }
 
-bool ClientDatagramSocket::connect ()
+bool ClientDatagramSocket::connect (const UI32 &milliSecondsToWaitFor)
 {
-    SI32 status = ::connect (m_socket, (const sockaddr *) &m_fromSocketAddres, m_fromSocketLength);
+    if (false == (isValid ()))
+    {
+        return false;
+    }
+
+    const UI32 maxNumberOfUnderlyingSocketConnectAttemps = 10;
+          UI32 connectAttemptCount                       = 0;
+          SI32 status                                    = 0;
+
+    while (connectAttemptCount < maxNumberOfUnderlyingSocketConnectAttemps)
+    {
+        status = ::connect (m_socket, (const sockaddr *) &m_fromSocketAddres, m_fromSocketLength);
+
+        if (0 == status)
+        {
+            break;
+        }
+        else
+        {
+            if (EINPROGRESS == errno)
+            {
+                connectAttemptCount++;
+
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 
     if (0 == status)
     {
-        if (false == (DatagramSocket::connect ()))
+        const UI32            maxNumberOfSecureSocketConnectAttemps = 10;
+              UI32            attemptCount                          = 0;
+              bool            isConnected                           = false;
+              ReadReadyStatus readReadyStatus                       = READ_READY_FATAL_ERROR;
+
+        if (true == (isSecurityEnabled ()))
         {
-            return (false);
+            isConnected = DatagramSocket::connect ();
+
+            while ((false == isConnected) && (attemptCount < maxNumberOfSecureSocketConnectAttemps))
+            {
+                readReadyStatus = isDataAvailableToRead ();
+
+                if (READ_READY_FATAL_ERROR == readReadyStatus)
+                {
+                    break;
+                }
+                else if (READ_READY_TIMEOUT == readReadyStatus)
+                {
+                    attemptCount++;
+                    continue;
+                }
+
+                isConnected = DatagramSocket::connect ();
+
+                if (true == isConnected)
+                {
+                    break;
+                }
+                else
+                {
+                    attemptCount++;
+                }
+            }
         }
+        else
+        {
+            isConnected = true;
+        }
+
+        return (isConnected);
     }
     else
     {

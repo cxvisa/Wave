@@ -615,7 +615,7 @@ WriteReadyStatus DatagramSocket::isAvailableToWriteData (const UI32 &milliSecond
     }
 }
 
-bool DatagramSocket::connectUnderlyingSocket ()
+bool DatagramSocket::connectUnderlyingSocketBasedOnIncomingDatagram ()
 {
     char *pBuffer = new char[100];
 

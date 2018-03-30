@@ -23,11 +23,11 @@ LightHouseTestObjectManager1::LightHouseTestObjectManager1 ()
     : WaveTestObjectManager (getServiceName ())
 {
 
-    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::clientDatagramTest),               "clientDatagramTest");
-    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::serverDatagramTest),               "serverDatagramTest");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::clientDatagramTest),       "clientDatagramTest");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::serverDatagramTest),       "serverDatagramTest");
 
-    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::secureClientDatagramTest),         "secureClientDatagramTest");
-    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::secureServerDatagramTest),         "secureServerDatagramTest");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::secureClientDatagramTest), "secureClientDatagramTest");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseTestObjectManager1::secureServerDatagramTest), "secureServerDatagramTest");
 }
 
 LightHouseTestObjectManager1::~LightHouseTestObjectManager1 ()
@@ -103,6 +103,11 @@ UI32 LightHouseTestObjectManager1::clientDatagramTest (UI32 argc, vector<string>
 
         for (int i = 0; i < numberOfClients; i++)
         {
+            if (0 == (i % 100))
+            {
+                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "LightHouseTestObjectManager1::clientDatagramTest : Iteration %u\n", i);
+            }
+
             ClientDatagramSocket clientDatagramSocket (remoteIpAddress, remotePort);
 
             bool isConnected = clientDatagramSocket.connect ();
@@ -143,7 +148,7 @@ UI32 LightHouseTestObjectManager1::serverDatagramTest (UI32 argc, vector<string>
         {
             ServerDatagramSocket *pServerDatagramSocket = new ServerDatagramSocket (localPort);
 
-            bool isConnected = pServerDatagramSocket->connectUnderlyingSocket ();
+            bool isConnected = pServerDatagramSocket->connectUnderlyingSocketBasedOnIncomingDatagram ();
 
             if (true != isConnected)
             {
@@ -173,9 +178,13 @@ UI32 LightHouseTestObjectManager1::secureClientDatagramTest (UI32 argc, vector<s
 
         for (int i = 0; i < numberOfClients; i++)
         {
+            WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "LightHouseTestObjectManager1::secureClientDatagramTest : Iteration %u\n", i);
+
             ClientDatagramSocket clientDatagramSocket (remoteIpAddress, remotePort);
 
             clientDatagramSocket.enableSecurity ();
+
+            clientDatagramSocket.setNonBlocking ();
 
             bool isConnected = clientDatagramSocket.connect ();
 
@@ -217,7 +226,7 @@ UI32 LightHouseTestObjectManager1::secureServerDatagramTest (UI32 argc, vector<s
 
             pServerDatagramSocket->enableSecurity ();
 
-            bool isConnected = pServerDatagramSocket->connectUnderlyingSocket ();
+            bool isConnected = pServerDatagramSocket->connectUnderlyingSocketBasedOnIncomingDatagram ();
 
             if (true != isConnected)
             {

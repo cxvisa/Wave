@@ -22,7 +22,7 @@ class ClientDatagramSocket : public DatagramSocket
 
         virtual void   enableSecurity       ();
 
-        virtual bool   connect              ();
+        virtual bool   connect              (const UI32 &milliSecondsToWaitFor = 1000);
 
         // Now the data members
 

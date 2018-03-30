@@ -257,7 +257,7 @@ int sslVerifyCallback (int preVerifyOk, X509_STORE_CTX *pX509Context)
     }
     else
     {
-        WaveNs::trace (TRACE_LEVEL_SUCCESS, "Certificate Verification Succeeded :");
+        WaveNs::trace (TRACE_LEVEL_DEBUG, "Certificate Verification Succeeded :");
 
         char buffer[256];
 
@@ -265,11 +265,11 @@ int sslVerifyCallback (int preVerifyOk, X509_STORE_CTX *pX509Context)
 
         X509_NAME_oneline (X509_get_subject_name (pCertificate), buffer, 256);
 
-        WaveNs::tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "    Subject Name: %s", buffer);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "    Subject Name: %s", buffer);
 
         X509_NAME_oneline (X509_get_issuer_name (pCertificate), buffer, 256);
 
-        WaveNs::tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "    Issuer  Name: %s", buffer);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "    Issuer  Name: %s", buffer);
     }
 
     return (preVerifyOk);
