@@ -17,11 +17,11 @@ class ServerDatagramSocket : public DatagramSocket
     private :
     protected :
     public :
-                      ServerDatagramSocket ();
-                      ServerDatagramSocket (const SI32 &port);
-        virtual      ~ServerDatagramSocket ();
+                      ServerDatagramSocket    ();
+                      ServerDatagramSocket    (const SI32 &port);
+        virtual      ~ServerDatagramSocket    ();
 
-                bool  connect              ();
+                bool  connectUnderlyingSocket ();
 
         // Now the data members
 

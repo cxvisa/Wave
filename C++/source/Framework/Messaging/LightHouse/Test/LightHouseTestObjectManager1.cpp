@@ -143,7 +143,7 @@ UI32 LightHouseTestObjectManager1::serverDatagramTest (UI32 argc, vector<string>
         {
             ServerDatagramSocket *pServerDatagramSocket = new ServerDatagramSocket (localPort);
 
-            bool isConnected = pServerDatagramSocket->connect ();
+            bool isConnected = pServerDatagramSocket->connectUnderlyingSocket ();
 
             if (true != isConnected)
             {
@@ -217,7 +217,7 @@ UI32 LightHouseTestObjectManager1::secureServerDatagramTest (UI32 argc, vector<s
 
             pServerDatagramSocket->enableSecurity ();
 
-            bool isConnected = pServerDatagramSocket->connect ();
+            bool isConnected = pServerDatagramSocket->connectUnderlyingSocket ();
 
             if (true != isConnected)
             {

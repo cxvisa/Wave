@@ -49,7 +49,7 @@ ServerDatagramSocket::~ServerDatagramSocket ()
 {
 }
 
-bool ServerDatagramSocket::connect ()
+bool ServerDatagramSocket::connectUnderlyingSocket ()
 {
     char *pBuffer = new char[100];
 
