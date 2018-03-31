@@ -1,4 +1,4 @@
-dnf -y install xerces-c-devel xalan-c-devel libidn-devel   binutils-devel zlib-devel pam-devel postgresql-server postgresql-devel libuuid-devel openssl-devel libcurl-devel file-devel plantuml graphviz autoconf automake libtool
+dnf -y install xerces-c-devel xalan-c-devel libidn-devel   binutils-devel zlib-devel pam-devel postgresql-server postgresql-devel libuuid-devel openssl-devel libcurl-devel file-devel plantuml graphviz autoconf automake libtool gcc-c++
 
 # Install gRPC
 
